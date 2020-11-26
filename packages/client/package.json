@@ -1,11 +1,11 @@
 {
-  "name": "blank-ts-monorepo-plugin",
+  "name": "@qiwi/npm-batch-client",
   "version": "0.0.0",
   "private": false,
   "publishConfig": {
     "access": "public"
   },
-  "description": "Plugin",
+  "description": "Common",
   "keywords": [],
   "main": "target/es5/index.js",
   "source": "target/ts/index.ts",
@@ -38,21 +38,19 @@
   },
   "dependencies": {
     "@qiwi/substrate": "^1.19.5",
-    "tslib": "^2.0.3",
-    "blank-ts-monorepo-common": "*"
+    "tslib": "^2.0.3"
   },
-  "devDependencies": {},
-  "peerDependencies": {},
-  "optionalDependencies": {},
+  "devDependencies": {
+    "@qiwi/npm-batch-infra": "*"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antongolub/blank-ts-monorepo.git"
+    "url": "git+https://github.com/qiwi/npm-batch-action.git"
   },
-  "author": "Anton Golub <mailbox@antongolub.ru>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/antongolub/blank-ts-monorepo/issues"
+    "url": "https://github.com/qiwi/npm-batch-action/issues"
   },
-  "homepage": "https://github.com/antongolub/blank-ts-monorepo/#readme",
+  "homepage": "https://github.com/qiwi/npm-batch-action/#readme",
   "prettier": "prettier-config-qiwi"
 }

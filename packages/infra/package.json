@@ -1,5 +1,5 @@
 {
-  "name": "blank-ts-monorepo-infra",
+  "name": "@qiwi/npm-batch-infra",
   "version": "0.0.0",
   "private": false,
   "publishConfig": {
@@ -50,10 +50,10 @@
   "author": "Anton Golub <mailbox@antongolub.ru>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antongolub/blank-ts-monorepo.git"
+    "url": "git+https://github.com/qiwi/npm-batch-action.git"
   },
   "bugs": {
-    "url": "https://github.com/antongolub/blank-ts-monorepo/issues"
+    "url": "https://github.com/qiwi/npm-batch-action/issues"
   },
-  "homepage": "https://github.com/antongolub/blank-ts-monorepo/#readme"
+  "homepage": "https://github.com/qiwi/npm-batch-action/#readme"
 }

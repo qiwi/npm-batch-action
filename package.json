@@ -1,5 +1,5 @@
 {
-  "name": "blank-ts-monorepo",
+  "name": "@qiwi/npm-batch-action",
   "version": "0.0.0",
   "description": "Blank TS monorepo",
   "main": "target/es5/index.ts",
@@ -33,6 +33,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antongolub/blank-ts-monorepo.git"
+    "url": "git+https://github.com/qiwi/npm-batch-action.git"
   }
 }
