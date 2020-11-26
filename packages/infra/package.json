@@ -1,5 +1,5 @@
 {
-  "name": "@qiwi/npm-batch-infra",
+  "name": "@qiwi/npm-batch-client-infra",
   "version": "0.0.0",
   "private": false,
   "publishConfig": {

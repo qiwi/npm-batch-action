@@ -1,11 +1,11 @@
 {
-  "name": "@qiwi/npm-batch-client",
+  "name": "@qiwi/npm-batch-client-wrapper",
   "version": "0.0.0",
   "private": false,
   "publishConfig": {
     "access": "public"
   },
-  "description": "NPM client for performing batch actions",
+  "description": "Wrapper for https://github.com/npm/npm-registry-client to perform batched actions",
   "keywords": [],
   "main": "target/es5/index.js",
   "source": "target/ts/index.ts",
@@ -41,7 +41,7 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@qiwi/npm-batch-infra": "*"
+    "@qiwi/npm-batch-client-infra": "*"
   },
   "repository": {
     "type": "git",

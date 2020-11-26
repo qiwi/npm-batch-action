@@ -1,7 +1,7 @@
 {
-  "name": "@qiwi/npm-batch-action",
+  "name": "@qiwi/npm-batch-client",
   "version": "0.0.0",
-  "description": "Utility for performing batch actions on given NPM registry",
+  "description": "Utility wraps https://github.com/npm/npm-registry-client to perform batched actions",
   "workspaces": [
     "packages/*"
   ],
@@ -33,5 +33,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/qiwi/npm-batch-action.git"
-  }
+  },
+  "dependencies": {}
 }
