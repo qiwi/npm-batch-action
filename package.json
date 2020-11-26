@@ -7,9 +7,8 @@
   ],
   "private": true,
   "scripts": {
-    "clean": "lerna clean --yes && lerna run clean",
-    "prebuild": "tsc -b packages/facade/tsconfig.es5.json",
-    "build": "yarn prebuild && lerna run build --stream --concurrency 2",
+    "clean": "lerna run clean",
+    "build": "lerna run build --stream --concurrency 2",
     "uglify": "lerna run uglify --stream --concurrency 2",
     "bootstrap": "lerna bootstrap",
     "jest": "jest --runInBand --detectOpenHandles --forceExit",
