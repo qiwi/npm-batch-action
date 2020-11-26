@@ -1,8 +1,6 @@
 {
   "collectCoverage": true,
   "projects": [
-    "<rootDir>/packages/common/jest.config.json",
-    "<rootDir>/packages/facade/jest.config.json",
-    "<rootDir>/packages/plugin/jest.config.json"
+    "<rootDir>/packages/wrapper/jest.config.json"
   ]
 }
