@@ -21,17 +21,17 @@ jobs:
           paths:
             - node_modules
             - packages
-    - <<: *build
-      os: windows
-      script: yarn build
-      # https://travis-ci.community/t/timeout-after-build-finished-and-succeeded/1336/2
-      env: YARN_GPG=no
-      workspaces:
-        create:
-          name: win-shared
-          paths:
-            - node_modules
-            - packages/**/target
+#    - <<: *build
+#      os: windows
+#      script: yarn build
+#      # https://travis-ci.community/t/timeout-after-build-finished-and-succeeded/1336/2
+#      env: YARN_GPG=no
+#      workspaces:
+#        create:
+#          name: win-shared
+#          paths:
+#            - node_modules
+#            - packages/**/target
 
     - &test
       stage: test
@@ -51,20 +51,20 @@ jobs:
       after_script:
         - ./cc-test-reporter format-coverage -t lcov ./coverage/lcov.info
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-    - <<: *test
-      os: windows
-      env: YARN_GPG=no
-      node_js: 12
-      install: yarn bootstrap
-      workspaces:
-        use: win-shared
-    - <<: *test
-      os: windows
-      node_js: 14
-      install: yarn bootstrap
-      env: YARN_GPG=no
-      workspaces:
-        use: win-shared
+#    - <<: *test
+#      os: windows
+#      env: YARN_GPG=no
+#      node_js: 12
+#      install: yarn bootstrap
+#      workspaces:
+#        use: win-shared
+#    - <<: *test
+#      os: windows
+#      node_js: 14
+#      install: yarn bootstrap
+#      env: YARN_GPG=no
+#      workspaces:
+#        use: win-shared
 
     - stage: release
       if: branch = master AND type != pull_request
