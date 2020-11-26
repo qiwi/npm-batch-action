@@ -1,8 +1,7 @@
 {
   "name": "@qiwi/npm-batch-action",
   "version": "0.0.0",
-  "description": "Blank TS monorepo",
-  "main": "target/es5/index.ts",
+  "description": "Utility for performing batch actions on given NPM registry",
   "workspaces": [
     "packages/*"
   ],

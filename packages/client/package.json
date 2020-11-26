@@ -5,7 +5,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "Common",
+  "description": "NPM client for performing batch actions",
   "keywords": [],
   "main": "target/es5/index.js",
   "source": "target/ts/index.ts",
