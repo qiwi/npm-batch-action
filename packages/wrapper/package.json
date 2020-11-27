@@ -21,7 +21,7 @@
     "flow-typed"
   ],
   "scripts": {
-    "test": "yarn lint && yarn test:spec",
+    "test": "yarn lint && yarn jest",
     "jest": "jest -w=1 --config=jest.config.json",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "yarn lint --fix",
@@ -38,10 +38,12 @@
   },
   "dependencies": {
     "@qiwi/substrate": "^1.19.5",
+    "npm-registry-client": "^8.6.0",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@qiwi/npm-batch-client-infra": "*"
+    "@qiwi/npm-batch-client-infra": "*",
+    "nock": "^13.0.5"
   },
   "repository": {
     "type": "git",
