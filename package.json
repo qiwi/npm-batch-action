@@ -1,16 +1,14 @@
 {
-  "name": "blank-ts-monorepo",
+  "name": "@qiwi/npm-batch-client",
   "version": "0.0.0",
-  "description": "Blank TS monorepo",
-  "main": "target/es5/index.ts",
+  "description": "Utility wraps https://github.com/npm/npm-registry-client to perform batched actions",
   "workspaces": [
     "packages/*"
   ],
   "private": true,
   "scripts": {
-    "clean": "lerna clean --yes && lerna run clean",
-    "prebuild": "tsc -b packages/facade/tsconfig.es5.json",
-    "build": "yarn prebuild && lerna run build --stream --concurrency 2",
+    "clean": "lerna run clean",
+    "build": "lerna run build --stream --concurrency 2",
     "uglify": "lerna run uglify --stream --concurrency 2",
     "bootstrap": "lerna bootstrap",
     "jest": "jest --runInBand --detectOpenHandles --forceExit",
@@ -33,6 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antongolub/blank-ts-monorepo.git"
-  }
+    "url": "git+https://github.com/qiwi/npm-batch-action.git"
+  },
+  "dependencies": {}
 }
