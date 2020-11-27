@@ -1,0 +1,161 @@
+{
+    "_id": "baz",
+    "_rev": "12-116b13c5b065b01fc85f3b4034414b2c",
+    "name": "baz",
+    "dist-tags": {
+        "latest": "1.2.0"
+    },
+    "versions": {
+        "1.1.0": {
+            "name": "baz",
+            "version": "1.1.0",
+            "description": "qux",
+            "main": "lib/es5/index.js",
+            "scripts": {
+                "build": ""
+            },
+            "repository": {
+                "type": "git",
+                "url": "git+https://github.com/foo/baz.git"
+            },
+            "keywords": [
+                "gen-tree"
+            ],
+            "author": {
+                "name": "foo@gmail.com"
+            },
+            "license": "ISC",
+            "bugs": {
+                "url": "https://github.com/foo/baz/issues"
+            },
+            "homepage": "https://github.com/foo/baz#readme",
+            "devDependencies": {
+                "@babel/preset-env": "^7.10.3",
+                "@types/jest": "^26.0.3",
+                "jest": "^26.1.0",
+                "ts-jest": "^26.1.1",
+                "typescript": "^3.9.5"
+            },
+            "dependencies": {
+                "react-d3-tree": "^1.16.1"
+            },
+            "gitHead": "",
+            "_id": "baz@1.1.0",
+            "_nodeVersion": "10.16.0",
+            "_npmVersion": "6.13.7",
+            "dist": {
+                "integrity": "",
+                "shasum": "",
+                "tarball": "",
+                "fileCount": 9,
+                "unpackedSize": 3002,
+                "npm-signature": ""
+            },
+            "maintainers": [
+                {
+                    "name": "foo",
+                    "email": "bat@qiwi.com"
+                }
+            ],
+            "_npmUser": {
+                "name": "foo",
+                "email": "bat@qiwi.com"
+            },
+            "directories": {},
+            "_hasShrinkwrap": false
+        },
+        "1.2.0": {
+            "name": "baz",
+            "version": "1.2.0",
+            "description": "qux",
+            "main": "lib/es5/index.js",
+            "scripts": {
+                "jest": "jest --config=jest.config.json",
+                "test": "jest",
+                "clean": "rm -rf lib",
+                "build": "yarn clean && yarn build_es5 && yarn build_es6 && yarn build_ts",
+                "build_es5": "mkdir -p lib/es5 && tsc -p tsconfig.json --target ES5 --outDir lib/es5",
+                "build_es6": "mkdir -p lib/es6 && tsc -p tsconfig.json --target ES6 --outDir lib/es6",
+                "build_ts": "cp -r src/main/ lib/ts/"
+            },
+            "repository": {
+                "type": "git",
+                "url": "git+https://github.com/foo/baz.git"
+            },
+            "keywords": [
+                "gen-tree"
+            ],
+            "author": {
+                "name": "foo@gmail.com"
+            },
+            "license": "ISC",
+            "bugs": {
+                "url": "https://github.com/foo/baz/issues"
+            },
+            "homepage": "https://github.com/foo/baz#readme",
+            "devDependencies": {
+                "@babel/preset-env": "^7.10.3",
+                "@types/jest": "^26.0.3",
+                "jest": "^26.1.0",
+                "ts-jest": "^26.1.1",
+                "typescript": "^3.9.5"
+            },
+            "dependencies": {
+                "react-d3-tree": "^1.16.1"
+            },
+            "_id": "baz@1.2.0",
+            "_nodeVersion": "12.18.3",
+            "_npmVersion": "6.14.8",
+            "dist": {
+                "integrity": "",
+                "shasum": "",
+                "tarball": "",
+                "fileCount": 4,
+                "unpackedSize": 1490,
+                "npm-signature": ""
+            },
+            "_npmUser": {
+                "name": "foo",
+                "email": "bat@qiwi.com"
+            },
+            "directories": {},
+            "maintainers": [
+                {
+                    "name": "foo",
+                    "email": "bat@qiwi.com"
+                }
+            ],
+            "_hasShrinkwrap": false
+        }
+    },
+    "time": {
+        "created": "2020-06-27T16:32:15.116Z",
+        "1.1.0": "2020-06-27T16:32:15.263Z",
+        "modified": "2020-11-26T15:36:17.647Z",
+        "1.2.0": "2020-11-26T14:01:28.279Z"
+    },
+    "maintainers": [
+        {
+            "name": "foo",
+            "email": "bat@qiwi.com"
+        }
+    ],
+    "description": "qux",
+    "homepage": "https://github.com/foo/baz#readme",
+    "keywords": [
+        "gen-tree"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/foo/baz.git"
+    },
+    "author": {
+        "name": "foo@gmail.com"
+    },
+    "bugs": {
+        "url": "https://github.com/foo/baz/issues"
+    },
+    "license": "ISC",
+    "readme": "# test\ntest\n",
+    "readmeFilename": "README.md"
+}
