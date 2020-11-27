@@ -1,5 +1,5 @@
 {
-  "name": "@qiwi/npm-batch-client",
+  "name": "@qiwi/npm-batch-client-monorepo",
   "version": "0.0.0",
   "description": "Utility wraps https://github.com/npm/npm-registry-client to perform batched actions",
   "workspaces": [

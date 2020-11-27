@@ -1,10 +1,10 @@
-# @qiwi/npm-batch-action
+# @qiwi/npm-batch-client-monorepo
 Packages for performing batched actions on NPM registry.
 
-## [@qiwi/npm-batch-client-wrapper](https://github.com/qiwi/npm-batch-action/tree/master/packages/wrapper)
+## [@qiwi/npm-batch-client](https://github.com/qiwi/npm-batch-action/tree/master/packages/client)
 Wrapper for https://github.com/npm/npm-registry-client with ~~blackjack~~ promises and batch actions.
 ```typescript
-import { NpmRegClientWrapper } from '@qiwi/npm-batch-client-wrapper'
+import { NpmRegClientWrapper } from '@qiwi/npm-batch-client'
 
 const wrapper = new NpmRegClientWrapper(
   'https://registry.npmjs.org',

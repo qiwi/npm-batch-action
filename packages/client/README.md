@@ -1,14 +1,14 @@
-# @qiwi/npm-batch-client-wrapper
+# @qiwi/npm-batch-client
 Wrapper for https://github.com/npm/npm-registry-client with ~~blackjack~~ promises and batch actions.
 # Installation
 ```shell script
-npm install @qiwi/npm-batch-client-wrapper
-yarn add @qiwi/npm-batch-client-wrapper
+npm install @qiwi/npm-batch-client
+yarn add @qiwi/npm-batch-client
 ```
 # Usage
 ## Creating an instance
 ```typescript
-import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client-wrapper'
+import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
 
 const wrapper = new NpmRegClientWrapper(
   'https://registry.npmjs.org',
