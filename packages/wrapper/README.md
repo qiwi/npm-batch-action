@@ -8,8 +8,7 @@ yarn add @qiwi/npm-batch-client-wrapper
 # Usage
 ## Creating an instance
 ```typescript
-import { NpmRegClientWrapper } from '@qiwi/npm-batch-client-wrapper'
-import RegClient from 'npm-registry-client'
+import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client-wrapper'
 
 const wrapper = new NpmRegClientWrapper(
   'https://registry.npmjs.org',
@@ -62,8 +61,8 @@ wrapper.deprecate('foo', '<1.2.0', 'foo <1.2.0 contains critical bugs')
   },
 ]
 wrapper.deprecateBatch(params)
+wrapper.deprecateBatch(params, true) // if you want to ignore errors when executing a batch of actions
 ```
-
 ## Un-deprecate list of packages
 ```typescript
  const params = [
@@ -81,4 +80,5 @@ wrapper.deprecateBatch(params)
   },
 ]
 wrapper.unDeprecateBatch(params)
+wrapper.unDeprecateBatch(params, true) // if you want to ignore errors when executing a batch of actions
 ```

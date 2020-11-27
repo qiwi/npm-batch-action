@@ -77,3 +77,4 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   }
 }
 
+export { RegClient }
