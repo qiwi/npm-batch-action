@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/npm-batch-client",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -42,7 +42,7 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@qiwi/npm-batch-client-infra": "*",
+    "@qiwi/npm-batch-client-infra": "1.0.0",
     "nock": "^13.0.5"
   },
   "repository": {
