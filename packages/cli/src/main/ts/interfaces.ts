@@ -9,8 +9,8 @@ export interface IBaseConfig<T = any> {
   registryUrl: string
   auth: TNpmRegClientAuth
   action: TNpmAction
-  settings?: {
-    rate?: TRateLimit,
+  batch?: {
+    ratelimit?: TRateLimit,
     skipErrors?: boolean,
   }
   data: T,

@@ -11,8 +11,8 @@ describe('performDeprecation', () => {
         username: 'username',
         password: 'password',
       },
-      settings: {
-        rate: {
+      batch: {
+        ratelimit: {
           period: 500,
           count: 2
         }

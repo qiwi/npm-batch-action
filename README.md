@@ -17,7 +17,7 @@ wrapper.deprecate('foo', '<1.2.0', 'foo <1.2.0 contains critical bugs')
 ```
 
 ## [@qiwi/npm-batch-cli](https://github.com/qiwi/npm-batch-action/tree/master/packages/cli)
-CLI utility for performing batched actions.
+CLI utility for performing batched npm actions.
 ```shell script
 @qiwi/npm-batch-cli --config=config.json
 ```

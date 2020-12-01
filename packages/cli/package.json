@@ -5,7 +5,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "CLI utility for performing batched actions",
+  "description": "CLI utility for performing batched npm actions",
   "keywords": [],
   "main": "target/es5/index.js",
   "source": "target/ts/index.ts",

@@ -9,7 +9,7 @@ export const performDeprecation = async (config: TDeprecationConfig): Promise<an
   const batchClient = new NpmRegClientWrapper(
     config.registryUrl,
     config.auth,
-    withRateLimit<RegClient>(regClient, config.settings?.rate || defaultRateLimit, ['deprecate'])
+    withRateLimit<RegClient>(regClient, config.batch?.ratelimit || defaultRateLimit, ['deprecate'])
   )
-  return batchClient.unDeprecateBatch(config.data, config.settings?.skipErrors)
+  return batchClient.unDeprecateBatch(config.data, config.batch?.skipErrors)
 }

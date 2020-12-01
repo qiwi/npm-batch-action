@@ -1,11 +1,11 @@
 # @qiwi/npm-batch-cli
-CLI utility for performing batched actions
-# Installation
+CLI utility for performing batched npm actions
+## Installation
 ```shell script
 npm install @qiwi/npm-batch-cli
 yarn add @qiwi/npm-batch-cli
 ```
-# Usage
+## Usage
 ```shell script
 @qiwi/npm-batch-cli --config=some/path/config.json
 ```
@@ -65,8 +65,8 @@ In this example maximum 2 requests per 500 ms will be made.
         "username": "username",
         "password": "password"
     },
-    "settings": {
-        "rate": {
+    "batch": {
+        "ratelimit": {
             "period": 500,
             "count": 2
         }
@@ -82,8 +82,9 @@ You can specify several rate limits:
         "username": "username",
         "password": "password"
     },
-    "settings": {
-        "rate": [
+    "batch": {
+        "skipErrors": true, // pass this, if you want utility to continue when an error occurs
+        "ratelimit": [
             {
                 "period": 500,
                 "count": 2
