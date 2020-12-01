@@ -13,6 +13,7 @@
   "typescript": {
     "definition": "target/es5/index.d.ts"
   },
+  "bin": "target/es5/cli.js",
   "files": [
     "README.md",
     "CHANGELOG.md",
