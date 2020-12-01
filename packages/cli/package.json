@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/npm-batch-cli",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -39,14 +39,14 @@
   },
   "dependencies": {
     "@qiwi/deep-proxy": "^1.8.1",
-    "@qiwi/npm-batch-client": "^0.0.0",
+    "@qiwi/npm-batch-client": "1.0.0",
     "@qiwi/substrate": "^1.19.5",
     "meow": "^8.0.0",
     "push-it-to-the-limit": "^1.17.1",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@qiwi/npm-batch-client-infra": "*",
+    "@qiwi/npm-batch-client-infra": "1.0.0",
     "nock": "^13.0.5"
   },
   "repository": {
