@@ -1,4 +1,9 @@
 # @qiwi/npm-batch-client-monorepo
+[![Build Status](https://travis-ci.com/qiwi/npm-batch-action.svg?token=j2DTAqhDwW39KLCBSUNN&branch=master)](https://travis-ci.com/qiwi/npm-batch-action)
+[![Coverage Status](https://coveralls.io/repos/github/qiwi/npm-batch-action/badge.svg?branch=master)](https://coveralls.io/github/qiwi/npm-batch-action?branch=master)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/0d25f494f7199f633c8a/test_coverage)](https://codeclimate.com/github/qiwi/npm-batch-action/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/0d25f494f7199f633c8a/maintainability)](https://codeclimate.com/github/qiwi/npm-batch-action/maintainability)
+
 Packages for performing batched actions on NPM registry.
 
 ## [@qiwi/npm-batch-client](https://github.com/qiwi/npm-batch-action/tree/master/packages/client)
