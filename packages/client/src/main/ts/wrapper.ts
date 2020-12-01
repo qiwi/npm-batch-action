@@ -40,7 +40,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   deprecateBatch(
     params: Array<IDeprecatePackageParams>,
     skipErrors?: boolean
-  ): Promise<any> {
+  ): Promise<any[]> {
     return NpmRegClientWrapper.performBatchActions(
       params,
       ({ packageName, version, message }) => this.deprecate(packageName, version, message),
