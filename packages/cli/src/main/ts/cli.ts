@@ -5,7 +5,7 @@ import { run } from './runner'
 
 const cli = meow(
   `
-    CLI utility for performing batched actions
+    CLI utility for performing batched npm actions
     Usage
     @qiwi/npm-batch-cli --input=input.json
     Options
