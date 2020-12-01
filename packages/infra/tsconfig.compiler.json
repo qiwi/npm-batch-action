@@ -22,6 +22,7 @@
 
     "esModuleInterop": true,
     "composite": true,
-    "incremental": true
+    "incremental": true,
+    "typeRoots": ["../../node_modules/@types", "../../custom-typings"]
   }
 }

@@ -3,7 +3,8 @@
   "compilerOptions": {
     "baseUrl": "./packages",
     "paths": {
-      "@qiwi/npm-batch-client": ["./client/src/main/ts"]
+      "@qiwi/npm-batch-client": ["./client/src/main/ts"],
+      "@qiwi/npm-batch-cli": ["./cli/src/main/ts"]
     }
   }
 }
