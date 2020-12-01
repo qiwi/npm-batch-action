@@ -54,6 +54,6 @@ describe('performDeprecation', () => {
     const endTime = Date.now() - startTime
     expect(mocks.filter(item => item.info.isDone() && item.deprecate.isDone()))
       .toHaveLength(mocks.length)
-    expect(endTime).toBeGreaterThanOrEqual(750)
+    expect(endTime).toBeGreaterThanOrEqual(500)
   })
 })
