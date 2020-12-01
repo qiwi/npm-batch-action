@@ -1,4 +1,3 @@
-// @ts-ignore
 import RegClient from 'npm-registry-client'
 
 import { IDeprecatePackageParams, INpmRegClientWrapper, IPackageParams,TNpmRegClientAuth } from './interfaces'
