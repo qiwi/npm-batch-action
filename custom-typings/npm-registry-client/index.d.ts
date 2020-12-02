@@ -11,11 +11,19 @@ declare module 'npm-registry-client' {
     message: string
   }
 
+  type TCallback<T = any> = (error: any, data: T, raw: any, res: any) => void
+
   class RegClient {
     deprecate(
       uri: string,
       params: TPackage & { auth: TAuth },
-      cb: (error: any, data: any, raw: any, res: any) => void
+      cb: TCallback
+    ): void
+
+    get(
+      uri: string,
+      params: any,
+      cb: TCallback
     ): void
   }
   export = RegClient

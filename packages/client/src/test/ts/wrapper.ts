@@ -47,6 +47,32 @@ describe('NpmRegClientWrapper', () => {
     return wrapper.deprecate('foo', '*', 'foo')
   })
 
+  test('get calls REST API', async () => {
+    const packageName = 'foo'
+    const mock = nock(url)
+      .get(`/${packageName}`)
+      .reply(200, packageInfo)
+    await expect(wrapper.get(packageName)).resolves.toMatchObject(packageInfo)
+    expect(mock.isDone()).toEqual(true)
+  })
+
+  test('getBatch', async () => {
+    const packageNames = [
+      'foo',
+      'bar',
+      'baz'
+    ]
+
+    const mocks = packageNames.map(
+      packageName => nock(url)
+        .get(`/${packageName}`)
+        .reply(200, packageInfo)
+    )
+
+    await expect(wrapper.getBatch(packageNames)).resolves.toMatchObject(new Array(3).fill(packageInfo))
+    expect(mocks.filter(mock => mock.isDone())).toHaveLength(packageNames.length)
+  })
+
   test('deprecateBatch makes batch calls to REST API', async () => {
     const params: Array<IDeprecatePackageParams & { verifier: Parameters<typeof prepareMocks>['1'] }> = [
       {

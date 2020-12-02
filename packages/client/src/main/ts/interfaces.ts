@@ -1,3 +1,5 @@
+import { Packument } from '@npm/types'
+
 export interface IPackageParams {
   packageName: string
   version: string
@@ -29,6 +31,15 @@ export interface INpmRegClientWrapper {
     params: Array<IPackageParams>,
     skipErrors?: boolean
   ): Promise<any[]>
+
+  get(
+    packageName: string
+  ): Promise<Packument>
+
+  getBatch(
+    packageNames: string[],
+    skipErrors?: boolean
+  ): Promise<Packument[]>
 }
 
 export type TNpmRegClientAuth = {

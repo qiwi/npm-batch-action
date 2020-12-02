@@ -36,6 +36,65 @@ const wrapperWithCustomClientInstance = new NpmRegClientWrapper(
 )
 ```
 
+## Get info about package
+```typescript
+wrapper.get('@types/react')
+  .then(console.log)
+/*
+{
+    "_id": "foo",
+    "_rev": "12-116b13c5b065b01fc85f3b4034414b2c",
+    "name": "foo",
+    "dist-tags": {
+        "latest": "1.2.0"
+    },
+    "versions": {
+        "1.1.0": {
+    ...
+}
+*/
+```
+## Get info about packages by list
+```typescript
+const packageNames = [
+  'foo',
+  'bar',
+  'baz'
+]
+
+wrapper.getBatch(packageNames)
+  .then(console.log)
+/*
+[
+    {
+        "_id": "foo",
+        "_rev": "12-12345678123456781234567812345678",
+        "name": "foo",
+        "dist-tags": {
+            "latest": "1.2.0"
+        },
+        "versions": {
+            "1.1.0": {
+        ...
+    },
+    {
+        "_id": "bar",
+        "_rev": "12-12345678123456781234567812345679",
+        "name": "bar",
+        "dist-tags": {
+            "latest": "1.2.0"
+        },
+        "versions": {
+            "1.1.0": {
+        ...
+    },
+    ...
+]
+*/
+wrapper.getBatch(packageNames, true) // if you want to ignore errors when executing a batch actions
+
+```
+
 ## Deprecate package version by given range and with given message
 ```typescript
 wrapper.deprecate('foo', '<1.2.0', 'foo <1.2.0 contains critical bugs')
