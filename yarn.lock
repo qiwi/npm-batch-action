@@ -1346,6 +1346,11 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
+"@npm/types@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@npm/types/-/types-1.0.1.tgz#6b378d8ef427ddaf2efa967b4530de793dbc2de2"
+  integrity sha512-+tTwymYjZrm7s5KPcS6Abq2l1wVlsk0Jxx4RWMMlC9BePNK4BGMaXUKWphdi7xAYJNA+lwqIqFK6hcNrMu/HFg==
+
 "@octokit/auth-token@^2.4.0":
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/@octokit/auth-token/-/auth-token-2.4.3.tgz#b868b5f2366533a7e62933eaa1181a8924228cc4"

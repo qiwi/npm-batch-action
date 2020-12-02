@@ -47,6 +47,7 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
+    "@npm/types": "^1.0.1",
     "@qiwi/npm-batch-client-infra": "1.0.0",
     "nock": "^13.0.5"
   },
