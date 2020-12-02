@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/npm-batch-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@qiwi/deep-proxy": "^1.8.1",
-    "@qiwi/npm-batch-client": "1.0.1",
+    "@qiwi/npm-batch-client": "1.1.0",
     "@qiwi/substrate": "^1.19.5",
     "meow": "^8.0.0",
     "push-it-to-the-limit": "^1.17.1",

@@ -1,3 +1,13 @@
+## @qiwi/npm-batch-cli [1.0.3](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli@1.0.2...@qiwi/npm-batch-cli@1.0.3) (2020-12-02)
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/npm-batch-client:** upgraded to 1.1.0
+
 ## @qiwi/npm-batch-cli [1.0.2](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli@1.0.1...@qiwi/npm-batch-cli@1.0.2) (2020-12-02)
 
 
