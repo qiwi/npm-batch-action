@@ -1,3 +1,10 @@
+## @qiwi/npm-batch-client [1.0.1](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-client@1.0.0...@qiwi/npm-batch-client@1.0.1) (2020-12-02)
+
+
+### Bug Fixes
+
+* **cli:** wrong method call ([#6](https://github.com/qiwi/npm-batch-action/issues/6)) ([a3a14a4](https://github.com/qiwi/npm-batch-action/commit/a3a14a407f189ab482604060310d2fe3f054cbeb))
+
 # @qiwi/npm-batch-client 1.0.0 (2020-12-01)
 
 
