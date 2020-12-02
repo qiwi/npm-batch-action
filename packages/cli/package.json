@@ -6,7 +6,12 @@
     "access": "public"
   },
   "description": "CLI utility for performing batched npm actions",
-  "keywords": [],
+  "keywords": [
+    "npm",
+    "batch",
+    "deprecate",
+    "cli"
+  ],
   "main": "target/es5/index.js",
   "source": "target/ts/index.ts",
   "types": "target/es5/index.d.ts",

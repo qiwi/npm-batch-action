@@ -6,7 +6,12 @@
     "access": "public"
   },
   "description": "Wrapper for https://github.com/npm/npm-registry-client to perform batched actions",
-  "keywords": [],
+  "keywords": [
+    "npm",
+    "batch",
+    "deprecate",
+    "client"
+  ],
   "main": "target/es5/index.js",
   "source": "target/ts/index.ts",
   "types": "target/es5/index.d.ts",
