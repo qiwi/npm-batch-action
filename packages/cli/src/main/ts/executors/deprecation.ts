@@ -11,5 +11,5 @@ export const performDeprecation = async (config: TDeprecationConfig): Promise<an
     config.auth,
     withRateLimit<RegClient>(regClient, config.batch?.ratelimit || defaultRateLimit, ['deprecate'])
   )
-  return batchClient.unDeprecateBatch(config.data, config.batch?.skipErrors)
+  return batchClient.deprecateBatch(config.data, config.batch?.skipErrors)
 }
