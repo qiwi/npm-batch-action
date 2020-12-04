@@ -23,7 +23,7 @@ wrapper.deprecate('foo', '<1.2.0', 'foo <1.2.0 contains critical bugs')
 ## [@qiwi/npm-batch-cli](https://github.com/qiwi/npm-batch-action/tree/master/packages/cli)
 CLI utility for performing batched npm actions.
 ```shell script
-@qiwi/npm-batch-cli --config=config.json
+npx @qiwi/npm-batch-cli --config=config.json
 ```
 `config.json`:
 ```json
@@ -47,5 +47,19 @@ CLI utility for performing batched npm actions.
         ...
     ]
 }
+```
+## [@qiwi/npm-batch-cli-pipe](https://github.com/qiwi/npm-batch-action/tree/master/packages/cli-pipe)
+The same as `@qiwi/npm-batch-cli`, but with configuring via a pipeline.
+```shell script
+cat config.json | npx @qiwi/npm-batch-cli-pipe
+```
+
+## [@qiwi/npm-batch-cli-api](https://github.com/qiwi/npm-batch-action/tree/master/packages/cli-api)
+API for npm-batch CLI utilities.
+```typescript
+import { readConfigAndRun } from '@qiwi/npm-batch-cli-api'
+
+readConfigAndRun({ config: 'config.json' })
+    .then(() => console.log('Done.'))
 ```
 
