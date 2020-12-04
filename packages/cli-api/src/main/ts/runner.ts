@@ -2,8 +2,8 @@ import { performDeprecation } from './executors'
 import { ICliArgs } from './interfaces'
 import { readFileToString, validateBaseConfig, validateDeprecationConfig } from './utils'
 
-export const run = (args: ICliArgs): Promise<any[]> => {
-  const rawConfig = JSON.parse(readFileToString(args.config))
+export const run = (configString: string): Promise<any[]> => {
+  const rawConfig = JSON.parse(configString)
   const validatedConfig = validateBaseConfig(rawConfig)
   switch (validatedConfig.action) {
     case 'deprecate':
@@ -16,3 +16,7 @@ export const run = (args: ICliArgs): Promise<any[]> => {
   }
 }
 
+export const readConfigAndRun = (args: ICliArgs): Promise<any[]> => {
+  const config = readFileToString(args.config)
+  return run(config)
+}
