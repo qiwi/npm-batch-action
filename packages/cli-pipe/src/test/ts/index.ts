@@ -10,7 +10,7 @@ describe('cli', () => {
     const exitSpy = jest.spyOn(process, 'exit')
       .mockImplementation(() => undefined as never)
 
-    require('@qiwi/npm-batch-cli-pipe')
+    require('../../main/ts')
 
     stdin.emit('data', 'a')
     stdin.emit('data', 'b')
