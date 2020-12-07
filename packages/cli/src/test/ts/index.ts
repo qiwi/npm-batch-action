@@ -8,7 +8,9 @@ describe('cli', () => {
       .mockImplementation(() => undefined as never)
     const logSpy = jest.spyOn(console, 'log')
       .mockImplementation(() => { /* noop */ })
-    process.argv.push('--config=config.json')
+    // local script `jest` is called with --config=jest.config.json flag, and CLI script requires --config flag,
+    // that's why now we don't need to add it to process.argv
+    // process.argv.push('--config=config.json')
 
     require('../../main/ts')
 
