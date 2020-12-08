@@ -1,10 +1,20 @@
 {
-  "extends": "./packages/infra/tsconfig.compiler.json",
-  "compilerOptions": {
-    "baseUrl": "./packages",
-    "paths": {
-      "@qiwi/npm-batch-client": ["./client/src/main/ts"],
-      "@qiwi/npm-batch-cli": ["./cli/src/main/ts"]
+    "extends": "./packages/infra/tsconfig.compiler.json",
+    "compilerOptions": {
+        "baseUrl": "./packages",
+        "paths": {
+            "@qiwi/npm-batch-client": [
+                "./client/src/main/ts"
+            ],
+            "@qiwi/npm-batch-cli": [
+                "./cli/src/main/ts"
+            ],
+            "@qiwi/npm-batch-cli-api": [
+                "./cli-api/src/main/ts"
+            ],
+            "@qiwi/npm-batch-cli-pipe": [
+                "./cli-pipe/src/main/ts"
+            ]
+        }
     }
-  }
 }

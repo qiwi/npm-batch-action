@@ -1,11 +1,11 @@
 {
-  "name": "@qiwi/npm-batch-cli",
-  "version": "1.0.3",
+  "name": "@qiwi/npm-batch-cli-api",
+  "version": "0.0.0",
   "private": false,
   "publishConfig": {
     "access": "public"
   },
-  "description": "CLI utility for performing batched npm actions",
+  "description": "API for npm-batch CLI utilities",
   "keywords": [
     "npm",
     "batch",
@@ -18,7 +18,6 @@
   "typescript": {
     "definition": "target/es5/index.d.ts"
   },
-  "bin": "target/es5/index.js",
   "files": [
     "README.md",
     "CHANGELOG.md",
@@ -37,18 +36,21 @@
     "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
     "build:ts": "cpy src/main/ts/ target/ts/",
     "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
-    "build:local": "yarn build:es5 && chmod +x target/es5/index.js",
     "docs": "typedoc --readme README.md --tsconfig tsconfig.es5.json src/main",
     "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
     "postupdate": "yarn && yarn build && yarn test",
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/npm-batch-cli-api": "^0.0.0",
-    "meow": "^8.0.0"
+    "@qiwi/deep-proxy": "^1.8.1",
+    "@qiwi/npm-batch-client": "1.1.0",
+    "@qiwi/substrate": "^1.19.5",
+    "push-it-to-the-limit": "^1.17.1",
+    "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@qiwi/npm-batch-client-infra": "1.0.0"
+    "@qiwi/npm-batch-client-infra": "1.0.0",
+    "nock": "^13.0.5"
   },
   "repository": {
     "type": "git",

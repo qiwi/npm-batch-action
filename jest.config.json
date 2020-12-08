@@ -2,6 +2,8 @@
   "collectCoverage": true,
   "projects": [
     "<rootDir>/packages/client/jest.config.json",
-    "<rootDir>/packages/cli/jest.config.json"
+    "<rootDir>/packages/cli/jest.config.json",
+    "<rootDir>/packages/cli-pipe/jest.config.json",
+    "<rootDir>/packages/cli-api/jest.config.json"
   ]
 }
