@@ -2,7 +2,7 @@ import { performDeprecation } from './executors'
 import { ICliArgs } from './interfaces'
 import { readFileToString, validateBaseConfig, validateDeprecationConfig } from './utils'
 
-export const run = (configString: string): Promise<any[]> => {
+export const run = (configString: string): Promise<void> => {
   const rawConfig = JSON.parse(configString)
   const validatedConfig = validateBaseConfig(rawConfig)
   switch (validatedConfig.action) {
@@ -16,7 +16,7 @@ export const run = (configString: string): Promise<any[]> => {
   }
 }
 
-export const readConfigAndRun = (args: ICliArgs): Promise<any[]> => {
+export const readConfigAndRun = (args: ICliArgs): Promise<void> => {
   const config = readFileToString(args.config)
   return run(config)
 }
