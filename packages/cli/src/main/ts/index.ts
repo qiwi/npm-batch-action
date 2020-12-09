@@ -22,7 +22,6 @@ const cli = meow(
 
 readConfigAndRun(cli.flags)
   .then(() => {
-    console.log('Done')
     process.exit(0)
   })
   .catch(e => {
