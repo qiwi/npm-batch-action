@@ -12,7 +12,8 @@ export interface IBaseConfig<T = any> {
   batch?: {
     ratelimit?: TRateLimit,
     skipErrors?: boolean,
-  }
+    jsonOutput?: boolean
+  },
   data: T,
 }
 

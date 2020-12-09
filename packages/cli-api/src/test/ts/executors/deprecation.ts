@@ -112,7 +112,7 @@ describe('printResults', function () {
     }
 
     const failedPackages: any[] = []
-    printResults(config.data, failedPackages, consoleMock as any)
+    printResults(config.data, failedPackages, false, consoleMock as any)
     expect(consoleMock.log).toHaveBeenCalledWith(expect.stringContaining('success'))
     expect(consoleMock.table).toHaveBeenCalledWith(config.data, expect.any(Array))
     expect(consoleMock.error).not.toHaveBeenCalledWith(expect.stringContaining('errors'))
@@ -128,11 +128,30 @@ describe('printResults', function () {
 
     const successfulPackages: any[] = []
     const failedPackages = config.data.map(item => ({ ...item, error: 'error' }))
-    printResults(successfulPackages, failedPackages, consoleMock as any)
+    printResults(successfulPackages, failedPackages, false, consoleMock as any)
     expect(consoleMock.log).not.toHaveBeenCalledWith(expect.stringContaining('success'))
     expect(consoleMock.table).not.toHaveBeenCalledWith(successfulPackages, expect.any(Array))
     expect(consoleMock.error).toHaveBeenCalledWith(expect.stringContaining('errors'))
     expect(consoleMock.table).toHaveBeenCalledWith(failedPackages, expect.any(Array))
+  })
+
+  it('prints results in JSON when appropriate flag is presented', () => {
+    const consoleMock = {
+      log: jest.fn(),
+      table: jest.fn(),
+      error: jest.fn()
+    }
+    const successfulPackages: any[] = []
+    const failedPackages: any[] = []
+    printResults(successfulPackages, failedPackages, true, consoleMock as any)
+    expect(consoleMock.log).toHaveBeenCalledWith(JSON.stringify(
+      { successfulPackages, failedPackages },
+      null, // eslint-disable-line unicorn/no-null
+      '\t'
+    ))
+
+    expect(consoleMock.error).not.toHaveBeenCalled()
+    expect(consoleMock.table).not.toHaveBeenCalled()
   })
 })
 

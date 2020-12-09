@@ -23,7 +23,8 @@ export const processResults = (results: any[], config: TDeprecationConfig): void
 
   printResults(
     getSuccessfulResults(enrichedResults),
-    getFailedResults(enrichedResults)
+    getFailedResults(enrichedResults),
+    config.batch?.jsonOutput
   )
 }
 
@@ -33,7 +34,7 @@ type TEnrichedBatchResult = {
 }
 
 export const enrichResults = (normalizedResults: any[], data: IDeprecatePackageParams[]): TEnrichedBatchResult[] =>
-  normalizedResults.map((result, i) => ({ result, packageInfo: data[i]}))
+  normalizedResults.map((result, i) => ({ result, packageInfo: data[i] }))
 
 export const handleSettledResults = (results: PromiseSettledResult<any>[]): any[] =>
   results.map(result => result.status === 'rejected'
@@ -58,8 +59,23 @@ export const getFailedResults = (
 export const printResults = (
   successfulPackages: Array<IDeprecatePackageParams>,
   failedPackages: Array<IDeprecatePackageParams & { error: any }>,
+  jsonOutput?: boolean,
   logger = console
 ): void => {
+  if (jsonOutput) {
+    logger.log(
+      JSON.stringify(
+        {
+          successfulPackages,
+          failedPackages
+        },
+        null, // eslint-disable-line unicorn/no-null
+        '\t'
+      )
+    )
+    return
+  }
+
   if (successfulPackages.length > 0) {
     logger.log('Following packages are deprecated successfully:')
     logger.table(successfulPackages, ['packageName', 'version', 'message'])
