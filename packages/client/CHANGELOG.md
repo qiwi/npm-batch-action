@@ -1,3 +1,18 @@
+## @qiwi/npm-batch-client [1.1.1](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-client@1.1.0...@qiwi/npm-batch-client@1.1.1) (2020-12-28)
+
+
+### Bug Fixes
+
+* **package:** up deps, fix some vuls ([854e06f](https://github.com/qiwi/npm-batch-action/commit/854e06fb697da98574fff619d1039cd2b5bebda0))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/npm-batch-client-infra:** upgraded to 1.0.1
+
 # @qiwi/npm-batch-client [1.1.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-client@1.0.1...@qiwi/npm-batch-client@1.1.0) (2020-12-02)
 
 
