@@ -36,13 +36,13 @@
     "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
     "build:ts": "cpy src/main/ts/ target/ts/",
     "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
-    "docs": "typedoc --readme README.md --tsconfig tsconfig.es5.json src/main",
+    "docs": "typedoc src/main",
     "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
     "postupdate": "yarn && yarn build && yarn test",
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/substrate": "^1.19.5",
+    "@qiwi/substrate": "^1.19.6",
     "npm-registry-client": "^8.6.0",
     "tslib": "^2.0.3"
   },

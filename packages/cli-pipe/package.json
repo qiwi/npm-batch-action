@@ -38,7 +38,7 @@
     "build:ts": "cpy src/main/ts/ target/ts/",
     "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
     "build:local": "yarn build:es5 && chmod +x target/es5/index.js",
-    "docs": "typedoc --readme README.md --tsconfig tsconfig.es5.json src/main",
+    "docs": "typedoc src/main",
     "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
     "postupdate": "yarn && yarn build && yarn test",
     "format": "prettier --write 'src/**/*.ts'"
