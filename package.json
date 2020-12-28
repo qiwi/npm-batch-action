@@ -21,8 +21,8 @@
     "postupdate": "yarn && yarn bootstrap && npx yarn-audit-fix --audit-level=moderate && yarn clean && yarn build && yarn test"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.10",
+    "@types/jest": "^26.0.19",
+    "@types/node": "^14.14.16",
     "coveralls": "^3.1.0",
     "find-git-root": "^1.0.4",
     "jest": "^26.6.3",
