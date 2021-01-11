@@ -1497,10 +1497,10 @@
     tslib "^2.0.3"
     yargs-parser "^20.2.3"
 
-"@qiwi/npm-registry-client@^8.6.3":
-  version "8.6.3"
-  resolved "https://registry.yarnpkg.com/@qiwi/npm-registry-client/-/npm-registry-client-8.6.3.tgz#e5f8e6d5906843daad5da3c016a4992e0dc48f1e"
-  integrity sha512-ZskjtXYZmqGwwd+eVizQkB5kjiR0g29+mDgSu06FvfQzF5sxhE6wl9U6h1lXKvhL+gEG05gOC6iW4v0VxiM0YA==
+"@qiwi/npm-registry-client@^8.7.0":
+  version "8.7.0"
+  resolved "https://registry.yarnpkg.com/@qiwi/npm-registry-client/-/npm-registry-client-8.7.0.tgz#3577c917d2e4f07fb7306095c517be6daad50778"
+  integrity sha512-m5jKnwR+TH/TwEz914BrVjsoMS0I0TXQ9K7MLOofRnkjBaDGHafcYzrdI+QBdatw5iwV+kVLXpP+DEanr94gdw==
   dependencies:
     concat-stream "^2.0.0"
     graceful-fs "^4.2.4"
@@ -1540,7 +1540,7 @@
   resolved "https://registry.yarnpkg.com/@qiwi/substrate-types/-/substrate-types-1.46.6.tgz#807d02241ab4b57d4815493903abf063363bbfb4"
   integrity sha512-f1xcLjOibLtF3XkxtDrrXA9KMofJ3R8S2oaG+7flhlL70srCuCa+o3NsCPDiJVXIjJS7Nl+6enu5sHt+AW8jZA==
 
-"@qiwi/substrate@^1.19.6":
+"@qiwi/substrate@^1.19.6", "@qiwi/substrate@^1.19.7":
   version "1.19.7"
   resolved "https://registry.yarnpkg.com/@qiwi/substrate/-/substrate-1.19.7.tgz#c939a76455f3724cf08f310be0abfd82f7dbfa61"
   integrity sha512-reTSV0e2Fw4aQBx3p831JXD3c/DxhLUp4AC76+0hwcNmwlHUW2ct7/rdw0bziqV3g52B9JlYNAJKsKZ9WRJ/ZA==
@@ -8344,7 +8344,7 @@ tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.3:
+tslib@^2.0.3, tslib@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
   integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==

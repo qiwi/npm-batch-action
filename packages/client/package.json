@@ -44,10 +44,10 @@
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/npm-registry-client": "^8.6.3",
+    "@qiwi/npm-registry-client": "^8.7.0",
     "@qiwi/npm-types": "^1.0.2",
-    "@qiwi/substrate": "^1.19.6",
-    "tslib": "^2.0.3"
+    "@qiwi/substrate": "^1.19.7",
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@qiwi/npm-batch-client-infra": "1.0.1",
