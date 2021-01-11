@@ -1,4 +1,4 @@
-import { Packument } from '@npm/types'
+import { Packument } from '@qiwi/npm-types'
 
 export interface IPackageParams {
   packageName: string
@@ -9,6 +9,14 @@ export interface IDeprecatePackageParams extends IPackageParams {
   message: string
 }
 
+export type TPackageAccess = 'public' | 'restricted'
+
+export type TTarballOpts = {
+  name: string
+  version: string
+  filePath: string
+  access: TPackageAccess
+}
 
 export interface INpmRegClientWrapper {
   deprecate(
@@ -40,12 +48,20 @@ export interface INpmRegClientWrapper {
     packageNames: string[],
     skipErrors?: boolean
   ): Promise<Packument[]>
+
+  publish(
+    opts: TTarballOpts
+  ): Promise<any>
+
+  publishBatch(
+    opts: TTarballOpts[]
+  ): Promise<any>
 }
 
 export type TNpmRegClientAuth = {
   username: string,
   password: string,
-  email?: string,
+  email: string,
   alwaysAuth?: boolean
 } | {
   token: string,

@@ -1,7 +1,14 @@
-import RegClient from 'npm-registry-client'
+import RegClient from '@qiwi/npm-registry-client'
+import { Packument } from '@qiwi/npm-types'
+import { createReadStream } from 'fs'
 
-import { IDeprecatePackageParams, INpmRegClientWrapper, IPackageParams,TNpmRegClientAuth } from './interfaces'
-import { Packument } from '@npm/types'
+import {
+  IDeprecatePackageParams,
+  INpmRegClientWrapper,
+  IPackageParams,
+  TNpmRegClientAuth,
+  TTarballOpts
+} from './interfaces'
 
 export class NpmRegClientWrapper implements INpmRegClientWrapper {
   client: RegClient
@@ -84,6 +91,35 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     )
   }
 
+  publish({ name, version, filePath, access }: TTarballOpts): Promise<any> {
+    return new Promise<any>(
+      (resolve, reject) => {
+        try {
+          this.client.publish(
+            this.registryUrl,
+            {
+              metadata: { name, version },
+              access,
+              body: createReadStream(filePath),
+              auth: this.auth
+            },
+            NpmRegClientWrapper.callbackFactory(resolve, reject)
+          )
+        } catch (e) {
+          reject(e)
+        }
+      }
+    )
+  }
+
+  publishBatch(opts: TTarballOpts[], skipErrors?: boolean): Promise<any> {
+    return NpmRegClientWrapper.performBatchActions(
+      opts,
+      (opt) => this.publish(opt),
+      skipErrors
+    )
+  }
+
   static performBatchActions(
     params: Array<any>,
     actionFactory: (...args: any[]) => Promise<any>,
@@ -94,6 +130,22 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
       return Promise.allSettled(actions)
     }
     return Promise.all(actions)
+  }
+
+  static callbackFactory(
+    resolve: (...args: any[]) => void,
+    reject: (...args: any[]) => void,
+  ) {
+    return (
+      err: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+      data: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+    ): void => {
+      if (err) {
+        reject(err)
+        return
+      }
+      resolve(data)
+    }
   }
 }
 

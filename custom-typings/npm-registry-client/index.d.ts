@@ -1,4 +1,5 @@
-declare module 'npm-registry-client' {
+declare module '@qiwi/npm-registry-client' {
+  import { ReadStream } from 'fs'
   type TAuth = { alwaysAuth?: boolean } & (
     {
       username: string
@@ -13,6 +14,13 @@ declare module 'npm-registry-client' {
 
   type TCallback<T = any> = (error: any, data: T, raw: any, res: any) => void
 
+  type TPackageMetadata = {
+    name: string
+    version: string
+  }
+
+  type TAccess = 'public' | 'restricted'
+
   class RegClient {
     deprecate(
       uri: string,
@@ -23,6 +31,17 @@ declare module 'npm-registry-client' {
     get(
       uri: string,
       params: any,
+      cb: TCallback
+    ): void
+
+    publish(
+      uri: string,
+      params: {
+        metadata: TPackageMetadata
+        access: TAccess
+        auth: TAuth
+        body: ReadStream
+      },
       cb: TCallback
     ): void
   }

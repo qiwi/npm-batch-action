@@ -1,11 +1,20 @@
 import nock from 'nock'
+import { join } from 'path'
 
-import { IDeprecatePackageParams, IPackageParams, NpmRegClientWrapper, TNpmRegClientAuth } from '../../main/ts'
+import {
+  IDeprecatePackageParams,
+  IPackageParams,
+  NpmRegClientWrapper,
+  TNpmRegClientAuth, TPackageAccess,
+  TTarballOpts
+} from '../../main/ts'
 import packageInfo from './resources/packageInfo.json'
 
 const auth: TNpmRegClientAuth = {
   username: 'foo',
-  password: 'bar'
+  password: 'bar',
+  email: 'email@email.email',
+  alwaysAuth: true
 }
 
 const error = new Error('foo')
@@ -16,7 +25,7 @@ const actionFactory = (i: number): Promise<string> =>
     ? Promise.resolve('bar')
     : Promise.reject(error)
 
-beforeEach(() => jest.resetAllMocks())
+beforeEach(() => jest.restoreAllMocks())
 
 const prepareMocks = (packageName: string, bodyVerifier: (body: any) => boolean) => {
   const infoMock = nock(url)
@@ -131,7 +140,49 @@ describe('NpmRegClientWrapper', () => {
       ),
       false
     )
-  });
+  })
+
+  test('publish calls API', async () => {
+    const wrapper = new NpmRegClientWrapper(url, { token: 'token' })
+    const opts: TTarballOpts = {
+      name: 'package',
+      version: '1.0.0',
+      filePath: join(__dirname, 'resources', 'package.tar.gz'),
+      access: 'public'
+    }
+    const mock = nock(url)
+      .put('/package')
+      .reply(200)
+    await wrapper.publish(opts)
+    expect(mock.isDone()).toEqual(true)
+  })
+
+  test('publishBatch calls performBatchActions', async () => {
+    const wrapper = new NpmRegClientWrapper(url, { token: 'token' })
+    const filepath = {
+      version: '1.0.0',
+      filePath: join(__dirname, 'resources', 'package.tar.gz'),
+      access: 'public' as TPackageAccess
+    }
+    const opts: TTarballOpts[] = [
+      {
+        name: 'foo',
+        ...filepath
+      },
+      {
+        name: 'bar',
+        ...filepath
+      },
+      {
+        name: 'baz',
+        ...filepath
+      }
+    ]
+    const performBatchActionsSpy = jest.spyOn(NpmRegClientWrapper, 'performBatchActions')
+      .mockImplementation(() => Promise.resolve(42))
+    await wrapper.publishBatch(opts, true)
+    expect(performBatchActionsSpy).toHaveBeenCalledWith(opts, expect.any(Function), true)
+  })
 
   describe('performBatchActions', function () {
     const params = Array.from({ length: 5 }, (_, i) => i)
@@ -168,5 +219,38 @@ describe('NpmRegClientWrapper', () => {
         expect(wrapper.getPackageUrl(input)).toEqual(output)
       })
     })
-  });
+  })
+
+  describe('callbackFactory', () => {
+    it('returns function', () => {
+      expect(NpmRegClientWrapper.callbackFactory(
+        () => { /* noop */
+        },
+        () => { /* noop */
+        })
+      )
+        .toBeInstanceOf(Function)
+    })
+
+    test('returned function calls error cb', () => {
+      const errorCb = jest.fn()
+      const resolveCb = jest.fn()
+
+      const cb = NpmRegClientWrapper.callbackFactory(resolveCb, errorCb)
+      const error = new Error('error')
+      cb(error, '')
+      expect(errorCb).toHaveBeenCalledWith(error)
+      expect(resolveCb).not.toHaveBeenCalled()
+    })
+
+    test('returned function calls resolver', () => {
+      const errorCb = jest.fn()
+      const resolveCb = jest.fn()
+      const cb = NpmRegClientWrapper.callbackFactory(resolveCb, errorCb)
+      const data = { foo: 42 }
+      cb(undefined, data)
+      expect(errorCb).not.toHaveBeenCalled()
+      expect(resolveCb).toHaveBeenCalledWith(data)
+    })
+  })
 });
