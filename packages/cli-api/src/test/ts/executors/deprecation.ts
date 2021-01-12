@@ -17,6 +17,7 @@ const config: TDeprecationConfig = {
   auth: {
     username: 'username',
     password: 'password',
+    email: 'email@email.email'
   },
   batch: {
     ratelimit: {

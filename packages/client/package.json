@@ -27,6 +27,7 @@
   ],
   "scripts": {
     "test": "yarn lint && yarn jest",
+    "test:local": "yarn test && say success || say fail",
     "jest": "jest -w=1 --config=jest.config.json",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "yarn lint --fix",
@@ -39,15 +40,16 @@
     "docs": "typedoc src/main",
     "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
     "postupdate": "yarn && yarn build && yarn test",
+    "postupdate:local": "yarn postupdate && say postupdate succeeded || say postupdate failed",
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/substrate": "^1.19.6",
-    "npm-registry-client": "^8.6.0",
-    "tslib": "^2.0.3"
+    "@qiwi/npm-registry-client": "^8.7.0",
+    "@qiwi/npm-types": "^1.0.2",
+    "@qiwi/substrate": "^1.19.7",
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
-    "@npm/types": "^1.0.1",
     "@qiwi/npm-batch-client-infra": "1.0.1",
     "nock": "^13.0.5"
   },

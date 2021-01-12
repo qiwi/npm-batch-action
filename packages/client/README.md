@@ -14,7 +14,8 @@ const wrapper = new NpmRegClientWrapper(
   'https://registry.npmjs.org',
   {
     username: 'username',
-    password: 'password'
+    password: 'password',
+    email: 'email@email.com'
   }
 )
 
@@ -140,4 +141,34 @@ wrapper.deprecateBatch(params, true) // if you want to ignore errors when execut
 ]
 wrapper.unDeprecateBatch(params)
 wrapper.unDeprecateBatch(params, true) // if you want to ignore errors when executing a batch of actions
+```
+## Publish a package
+```typescript
+const opts = {
+  name: 'package',
+  version: '1.0.0',
+  filePath: 'package.tar.gz',
+  access: 'public' // or 'restricted'
+}
+
+wrapper.publish(opts)
+```
+## Publish a list of packages
+```typescript
+const opts = [
+    {
+      name: 'packageA',
+      version: '1.0.0',
+      filePath: 'packageA.tar.gz',
+      access: 'public'
+    },
+    {
+      name: 'packageB',
+      version: '1.0.0',
+      filePath: 'packageB.tar.gz',
+      access: 'public'
+    },
+]
+wrapper.publishBatch(opts)
+wrapper.publishBatch(opts, true) // if you want to ignore errors when executing a batch of actions
 ```

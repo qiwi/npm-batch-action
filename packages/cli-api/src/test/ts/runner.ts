@@ -9,6 +9,7 @@ const config: IBaseConfig = {
   auth: {
     username: 'username',
     password: 'password',
+    email: 'email@email.email'
   },
   action: 'deprecate',
   data: []
