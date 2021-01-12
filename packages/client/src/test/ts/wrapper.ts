@@ -25,7 +25,7 @@ const actionFactory = (i: number): Promise<string> =>
     ? Promise.resolve('bar')
     : Promise.reject(error)
 
-beforeEach(() => jest.restoreAllMocks())
+beforeEach(jest.restoreAllMocks)
 
 const prepareMocks = (packageName: string, bodyVerifier: (body: any) => boolean) => {
   const infoMock = nock(url)
@@ -62,7 +62,7 @@ describe('NpmRegClientWrapper', () => {
       .get(`/${packageName}`)
       .reply(200, packageInfo)
     await expect(wrapper.get(packageName)).resolves.toMatchObject(packageInfo)
-    expect(mock.isDone()).toEqual(true)
+    expect(mock.isDone()).toBeTruthy()
   })
 
   test('getBatch', async () => {
@@ -111,7 +111,7 @@ describe('NpmRegClientWrapper', () => {
     expect(mocks.reduce(
       (acc, { infoMock, updateMock }: any) => acc && infoMock.isDone() && updateMock.isDone(),
       true
-    )).toEqual(true)
+    )).toBeTruthy()
   })
 
   test('unDeprecate calls deprecate with an empty message', async () => {
