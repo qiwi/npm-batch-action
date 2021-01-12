@@ -5,8 +5,8 @@ import { createReadStream } from 'fs'
 import {
   IDeprecatePackageParams,
   INpmRegClientWrapper,
-  IPackageParams,
-  TNpmRegClientAuth,
+  IPackageParams, TBatchResult,
+  TNpmRegClientAuth, TPublishResult,
   TTarballOpts
 } from './interfaces'
 
@@ -48,7 +48,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   deprecateBatch(
     params: Array<IDeprecatePackageParams>,
     skipErrors?: boolean
-  ): Promise<any[]> {
+  ): Promise<TBatchResult<any>> {
     return NpmRegClientWrapper.performBatchActions(
       params,
       ({ packageName, version, message }) => this.deprecate(packageName, version, message),
@@ -59,7 +59,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   unDeprecateBatch(
     params: Array<IPackageParams>,
     skipErrors?: boolean
-  ): Promise<any[]> {
+  ): Promise<TBatchResult<any>> {
     return this.deprecateBatch(params.map(item => ({ ...item, message: '' })), skipErrors)
   }
 
@@ -83,7 +83,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     )
   }
 
-  getBatch(packageNames: string[], skipErrors?: boolean): Promise<Packument[]> {
+  getBatch(packageNames: string[], skipErrors?: boolean): Promise<TBatchResult<Packument>> {
     return NpmRegClientWrapper.performBatchActions(
       packageNames,
       (packageName) => this.get(packageName),
@@ -91,7 +91,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     )
   }
 
-  publish({ name, version, filePath, access }: TTarballOpts): Promise<any> {
+  publish({ name, version, filePath, access }: TTarballOpts): Promise<TPublishResult> {
     return new Promise<any>(
       (resolve, reject) => {
         try {
@@ -112,7 +112,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     )
   }
 
-  publishBatch(opts: TTarballOpts[], skipErrors?: boolean): Promise<any> {
+  publishBatch(opts: TTarballOpts[], skipErrors?: boolean): Promise<TBatchResult<TPublishResult>> {
     return NpmRegClientWrapper.performBatchActions(
       opts,
       (opt) => this.publish(opt),
@@ -120,11 +120,11 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     )
   }
 
-  static performBatchActions(
+  static performBatchActions<T>(
     params: Array<any>,
     actionFactory: (...args: any[]) => Promise<any>,
     skipErrors?: boolean
-  ): Promise<any> {
+  ): Promise<TBatchResult<T>> {
     const actions = params.map(actionFactory)
     if (skipErrors) {
       return Promise.allSettled(actions)

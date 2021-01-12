@@ -179,7 +179,7 @@ describe('NpmRegClientWrapper', () => {
       }
     ]
     const performBatchActionsSpy = jest.spyOn(NpmRegClientWrapper, 'performBatchActions')
-      .mockImplementation(() => Promise.resolve(42))
+      .mockImplementation(() => Promise.resolve([42]))
     await wrapper.publishBatch(opts, true)
     expect(performBatchActionsSpy).toHaveBeenCalledWith(opts, expect.any(Function), true)
   })

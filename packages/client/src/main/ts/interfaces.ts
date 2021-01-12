@@ -18,6 +18,12 @@ export type TTarballOpts = {
   access: TPackageAccess
 }
 
+export type TPublishResult = {
+  success: boolean
+}
+
+export type TBatchResult<T> = T[] | PromiseSettledResult<T>[]
+
 export interface INpmRegClientWrapper {
   deprecate(
     packageName: string,
@@ -47,15 +53,15 @@ export interface INpmRegClientWrapper {
   getBatch(
     packageNames: string[],
     skipErrors?: boolean
-  ): Promise<Packument[]>
+  ): Promise<TBatchResult<Packument>>
 
   publish(
     opts: TTarballOpts
-  ): Promise<any>
+  ): Promise<TPublishResult>
 
   publishBatch(
     opts: TTarballOpts[]
-  ): Promise<any>
+  ): Promise<TBatchResult<TPublishResult>>
 }
 
 export type TNpmRegClientAuth = {
