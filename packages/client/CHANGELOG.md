@@ -1,3 +1,18 @@
+# @qiwi/npm-batch-client [1.2.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-client@1.1.1...@qiwi/npm-batch-client@1.2.0) (2021-01-12)
+
+
+### Features
+
+* **client:** add publish methods, migrate to @qiwi/npm-registry-client ([#14](https://github.com/qiwi/npm-batch-action/issues/14)) ([a009369](https://github.com/qiwi/npm-batch-action/commit/a009369015a961a6828bb5049034816587a1b62d))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/npm-batch-client-infra:** upgraded to 1.1.0
+
 ## @qiwi/npm-batch-client [1.1.1](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-client@1.1.0...@qiwi/npm-batch-client@1.1.1) (2020-12-28)
 
 
