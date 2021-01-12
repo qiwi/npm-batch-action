@@ -8,7 +8,7 @@ import {
   processResults,
   TDeprecationConfig
 } from '../../../main/ts'
-import * as deprecation from '../../../main/ts/executors/deprecation'
+import * as deprecation from '../../../main/ts/executors/deprecate'
 import { mockOutput } from '../utils'
 
 const registryUrl = 'http://localhost'
