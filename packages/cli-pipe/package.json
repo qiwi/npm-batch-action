@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/npm-batch-cli-pipe",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -44,10 +44,10 @@
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/npm-batch-cli-api": "1.1.1"
+    "@qiwi/npm-batch-cli-api": "1.2.0"
   },
   "devDependencies": {
-    "@qiwi/npm-batch-client-infra": "1.0.1"
+    "@qiwi/npm-batch-client-infra": "1.1.0"
   },
   "repository": {
     "type": "git",
