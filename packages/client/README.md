@@ -6,6 +6,7 @@ npm install @qiwi/npm-batch-client
 yarn add @qiwi/npm-batch-client
 ```
 # Usage
+All batch methods return array of `PromiseSettledResult`s
 ## Creating an instance
 ```typescript
 import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
@@ -68,26 +69,31 @@ wrapper.getBatch(packageNames)
 /*
 [
     {
-        "_id": "foo",
-        "_rev": "12-12345678123456781234567812345678",
-        "name": "foo",
-        "dist-tags": {
-            "latest": "1.2.0"
+      status: 'fulfilled',
+      value: {
+        _id: 'foo',
+        _rev: '12-12345678123456781234567812345678',
+        name: 'foo',
+        'dist-tags': {
+          latest: '1.2.0'
         },
-        "versions": {
-            "1.1.0": {
+        versions: {
+          '1.1.0': {
         ...
     },
     {
-        "_id": "bar",
-        "_rev": "12-12345678123456781234567812345679",
-        "name": "bar",
-        "dist-tags": {
-            "latest": "1.2.0"
+      status: 'fulfilled',
+      value: {
+        _id: 'bar',
+        _rev: '12-12345678123456781234567812345679',
+        name: 'bar',
+        'dist-tags': {
+          latest: '1.2.0'
         },
-        "versions": {
-            "1.1.0": {
+        versions: {
+          '1.1.0': {
         ...
+      }
     },
     ...
 ]

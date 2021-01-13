@@ -5,10 +5,11 @@ import { createReadStream } from 'fs'
 import {
   IDeprecatePackageParams,
   INpmRegClientWrapper,
-  IPackageParams, TBatchResult,
-  TNpmRegClientAuth, TPublishResult,
-  TTarballOpts
-} from './interfaces'
+  IPackageParams,
+  TBatchResult,
+  TNpmRegClientAuth,
+  TPublishResult,
+  TTarballOpts} from './interfaces'
 
 export class NpmRegClientWrapper implements INpmRegClientWrapper {
   client: RegClient
@@ -48,7 +49,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   deprecateBatch(
     params: Array<IDeprecatePackageParams>,
     skipErrors?: boolean
-  ): Promise<TBatchResult<any>> {
+  ): Promise<TBatchResult<any>[]> {
     return NpmRegClientWrapper.performBatchActions(
       params,
       ({ packageName, version, message }) => this.deprecate(packageName, version, message),
@@ -59,7 +60,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   unDeprecateBatch(
     params: Array<IPackageParams>,
     skipErrors?: boolean
-  ): Promise<TBatchResult<any>> {
+  ): Promise<TBatchResult<any>[]> {
     return this.deprecateBatch(params.map(item => ({ ...item, message: '' })), skipErrors)
   }
 
@@ -83,7 +84,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     )
   }
 
-  getBatch(packageNames: string[], skipErrors?: boolean): Promise<TBatchResult<Packument>> {
+  getBatch(packageNames: string[], skipErrors?: boolean): Promise<TBatchResult<Packument>[]> {
     return NpmRegClientWrapper.performBatchActions(
       packageNames,
       (packageName) => this.get(packageName),
@@ -112,7 +113,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     )
   }
 
-  publishBatch(opts: TTarballOpts[], skipErrors?: boolean): Promise<TBatchResult<TPublishResult>> {
+  publishBatch(opts: TTarballOpts[], skipErrors?: boolean): Promise<TBatchResult<TPublishResult>[]> {
     return NpmRegClientWrapper.performBatchActions(
       opts,
       (opt) => this.publish(opt),
@@ -122,14 +123,15 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
 
   static performBatchActions<T>(
     params: Array<any>,
-    actionFactory: (...args: any[]) => Promise<any>,
+    actionFactory: (...args: any[]) => Promise<T>,
     skipErrors?: boolean
-  ): Promise<TBatchResult<T>> {
+  ): Promise<TBatchResult<T>[]> {
     const actions = params.map(actionFactory)
     if (skipErrors) {
       return Promise.allSettled(actions)
     }
     return Promise.all(actions)
+      .then(results => results.map(value => ({ status: 'fulfilled', value })))
   }
 
   static callbackFactory(

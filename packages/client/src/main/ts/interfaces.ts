@@ -22,7 +22,7 @@ export type TPublishResult = {
   success: boolean
 }
 
-export type TBatchResult<T> = T[] | PromiseSettledResult<T>[]
+export type TBatchResult<T> = PromiseSettledResult<T>
 
 export interface INpmRegClientWrapper {
   deprecate(
@@ -39,12 +39,12 @@ export interface INpmRegClientWrapper {
   deprecateBatch(
     params: Array<IDeprecatePackageParams>,
     skipErrors?: boolean
-  ): Promise<any[]>
+  ): Promise<TBatchResult<any>[]>
 
   unDeprecateBatch(
     params: Array<IPackageParams>,
     skipErrors?: boolean
-  ): Promise<any[]>
+  ): Promise<TBatchResult<any>[]>
 
   get(
     packageName: string
@@ -53,15 +53,16 @@ export interface INpmRegClientWrapper {
   getBatch(
     packageNames: string[],
     skipErrors?: boolean
-  ): Promise<TBatchResult<Packument>>
+  ): Promise<TBatchResult<Packument>[]>
 
   publish(
     opts: TTarballOpts
   ): Promise<TPublishResult>
 
   publishBatch(
-    opts: TTarballOpts[]
-  ): Promise<TBatchResult<TPublishResult>>
+    opts: TTarballOpts[],
+    skipErrors?: boolean
+  ): Promise<TBatchResult<TPublishResult>[]>
 }
 
 export type TNpmRegClientAuth = {
