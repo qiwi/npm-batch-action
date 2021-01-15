@@ -62,7 +62,7 @@ describe('NpmRegClientWrapper', () => {
   test('unDeprecate calls deprecate with an empty message', async () => {
     const wrapper = new NpmRegClientWrapper('localhost', auth)
     const deprecateSpy = jest.spyOn(wrapper, 'deprecate')
-      .mockImplementation(() => Promise.resolve())
+      .mockImplementation(() => Promise.resolve(null)) // eslint-disable-line unicorn/no-null
     await wrapper.unDeprecate('foo', 'bar')
     expect(deprecateSpy).toHaveBeenCalledWith('foo', 'bar', '')
   })
