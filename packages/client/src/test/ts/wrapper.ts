@@ -1,13 +1,7 @@
 import nock from 'nock'
 import { join } from 'path'
 
-import {
-  IDeprecatePackageParams,
-  IPackageParams,
-  NpmRegClientWrapper,
-  TNpmRegClientAuth, TPackageAccess,
-  TTarballOpts
-} from '../../main/ts'
+import { NpmRegClientWrapper, TNpmRegClientAuth, TTarballOpts } from '../../main/ts'
 import packageInfo from './resources/packageInfo.json'
 
 const auth: TNpmRegClientAuth = {
@@ -65,81 +59,12 @@ describe('NpmRegClientWrapper', () => {
     expect(mock.isDone()).toBeTruthy()
   })
 
-  test('getBatch', async () => {
-    const packageNames = [
-      'foo',
-      'bar',
-      'baz'
-    ]
-
-    const mocks = packageNames.map(
-      packageName => nock(url)
-        .get(`/${packageName}`)
-        .reply(200, packageInfo)
-    )
-
-    await expect(wrapper.getBatch(packageNames)).resolves.toMatchObject(new Array(3).fill(packageInfo))
-    expect(mocks.filter(mock => mock.isDone())).toHaveLength(packageNames.length)
-  })
-
-  test('deprecateBatch makes batch calls to REST API', async () => {
-    const params: Array<IDeprecatePackageParams & { verifier: Parameters<typeof prepareMocks>['1'] }> = [
-      {
-        packageName: 'foo',
-        version: '>1.1.0',
-        message: 'foo is deprecated',
-        verifier: (body: any) => body.versions['1.2.0'].deprecated === 'foo is deprecated'
-      },
-      {
-        packageName: 'bar',
-        version: '*',
-        message: 'bar is deprecated', // eslint-disable-line sonarjs/no-duplicate-string
-        verifier: (body: any) => body.versions['1.2.0'].deprecated === 'bar is deprecated' &&
-          body.versions['1.1.0'].deprecated === 'bar is deprecated'
-      },
-      {
-        packageName: 'baz',
-        version: '<1.2.0',
-        message: 'baz is deprecated',
-        verifier: (body: any) => body.versions['1.1.0'].deprecated === 'baz is deprecated'
-      },
-    ]
-
-    const mocks = params.map(({ packageName, verifier }) => prepareMocks(packageName, verifier))
-
-    await wrapper.deprecateBatch(params)
-    expect(mocks.reduce(
-      (acc, { infoMock, updateMock }: any) => acc && infoMock.isDone() && updateMock.isDone(),
-      true
-    )).toBeTruthy()
-  })
-
   test('unDeprecate calls deprecate with an empty message', async () => {
     const wrapper = new NpmRegClientWrapper('localhost', auth)
     const deprecateSpy = jest.spyOn(wrapper, 'deprecate')
-      .mockImplementation(() => Promise.resolve())
+      .mockImplementation(() => Promise.resolve(null)) // eslint-disable-line unicorn/no-null
     await wrapper.unDeprecate('foo', 'bar')
     expect(deprecateSpy).toHaveBeenCalledWith('foo', 'bar', '')
-  })
-
-  test('unDeprecateBatch calls deprecateBatch with an empty message', async () => {
-    const params: IPackageParams[] = [
-      { packageName: 'foo', version: '*' },
-      { packageName: 'bar', version: '*' },
-    ]
-    const wrapper = new NpmRegClientWrapper('localhost', auth)
-    const deprecateBatchSpy = jest.spyOn(wrapper, 'deprecateBatch')
-      .mockImplementation(() => Promise.resolve([]))
-    await wrapper.unDeprecateBatch(params, false)
-    expect(deprecateBatchSpy).toHaveBeenCalledWith(
-      expect.arrayContaining(
-        [
-          expect.objectContaining({ message: '' }),
-          expect.objectContaining({ message: '' })
-        ]
-      ),
-      false
-    )
   })
 
   test('publish calls API', async () => {
@@ -157,33 +82,6 @@ describe('NpmRegClientWrapper', () => {
     expect(mock.isDone()).toEqual(true)
   })
 
-  test('publishBatch calls performBatchActions', async () => {
-    const wrapper = new NpmRegClientWrapper(url, { token: 'token' })
-    const filepath = {
-      version: '1.0.0',
-      filePath: join(__dirname, 'resources', 'package.tar.gz'),
-      access: 'public' as TPackageAccess
-    }
-    const opts: TTarballOpts[] = [
-      {
-        name: 'foo',
-        ...filepath
-      },
-      {
-        name: 'bar',
-        ...filepath
-      },
-      {
-        name: 'baz',
-        ...filepath
-      }
-    ]
-    const performBatchActionsSpy = jest.spyOn(NpmRegClientWrapper, 'performBatchActions')
-      .mockImplementation(() => Promise.resolve(42))
-    await wrapper.publishBatch(opts, true)
-    expect(performBatchActionsSpy).toHaveBeenCalledWith(opts, expect.any(Function), true)
-  })
-
   describe('performBatchActions', function () {
     const params = Array.from({ length: 5 }, (_, i) => i)
 
@@ -193,10 +91,32 @@ describe('NpmRegClientWrapper', () => {
       ).rejects.toBe(error)
     })
 
+    it('returns array of PromiseSettledResults', async () => {
+      const results = await NpmRegClientWrapper.performBatchActions(
+        [1, 2, 3],
+        (value) => Promise.resolve(value)
+      )
+      expect(results).toEqual([
+        {
+          status: 'fulfilled',
+          value: 1,
+        },
+        {
+          status: 'fulfilled',
+          value: 2,
+        },
+        {
+          status: 'fulfilled',
+          value: 3,
+        },
+      ])
+    })
+
     it('continues processing with skipErrors when error occurs', async () => {
       const data = await NpmRegClientWrapper.performBatchActions(params, actionFactory, true)
       expect(data).toHaveLength(params.length)
       expect(data.filter((item: any) => item.status === 'fulfilled')).toHaveLength(3)
+      expect(data.filter((item: any) => item.status === 'rejected')).toHaveLength(2)
     })
   });
 
@@ -219,6 +139,25 @@ describe('NpmRegClientWrapper', () => {
         expect(wrapper.getPackageUrl(input)).toEqual(output)
       })
     })
+  })
+
+  describe('batch methods', () => {
+    const batchMethods = [
+      'deprecateBatch',
+      'unDeprecateBatch',
+      'getBatch',
+      'publishBatch'
+    ]
+    const wrapper = new NpmRegClientWrapper(url, auth)
+    batchMethods.forEach(async (method) =>
+      it(`${method} calls performBatchActions`, async () => {
+        const performBatchActionsSpy = jest.spyOn(NpmRegClientWrapper, 'performBatchActions')
+          .mockImplementation(() => Promise.resolve([]))
+        // @ts-ignore
+        await wrapper[method]([], true)
+        expect(performBatchActionsSpy).toHaveBeenCalledWith([], expect.any(Function), true)
+      })
+    )
   })
 
   describe('callbackFactory', () => {

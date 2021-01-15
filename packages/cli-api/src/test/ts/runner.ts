@@ -1,5 +1,6 @@
 import { IBaseConfig, readConfigAndRun } from '../../main/ts'
-import * as deprecation from '../../main/ts/executors/deprecation'
+import * as deprecation from '../../main/ts/executors/deprecate'
+import * as publish from '../../main/ts/executors/publish'
 import * as utils from '../../main/ts/utils/misc'
 import * as validators from '../../main/ts/utils/validators'
 import { mockOutput } from './utils'
@@ -36,6 +37,16 @@ describe('readConfigAndRun', () => {
     readConfigAndRun({ config: 'foo' })
     expect(spy).toHaveBeenCalled()
   })
+
+  it('calls performPublish for publish', () => {
+    mockOutput()
+    jest.spyOn(utils, 'readFileToString')
+      .mockImplementation(() => JSON.stringify({ ...config, action: 'publish' }))
+    const spy = jest.spyOn(publish, 'performPublish')
+    readConfigAndRun({ config: 'foo' })
+    expect(spy).toHaveBeenCalled()
+  })
+
 
   it('calls performDeprecation for un-deprecate', () => {
     mockOutput()
