@@ -1,6 +1,7 @@
 import assert from 'assert'
 
-import { IBaseConfig, TDeprecationConfig } from '../interfaces'
+import { IBaseConfig, TDeprecationConfig, TPublishConfig } from '../interfaces'
+import { assertString } from './misc'
 
 const isObject = (data: any) => typeof data === 'object' && data !== null
 
@@ -23,5 +24,21 @@ export const validateBaseConfig = (config: any): IBaseConfig => { // eslint-disa
 
 export const validateDeprecationConfig = (config: IBaseConfig): TDeprecationConfig => {
   assert.ok(Array.isArray(config.data), 'Data in config file should be an array')
+  config.data.forEach(({ packageName, version, message }) => {
+    assertString(packageName, 'packageName')
+    assertString(version, 'version')
+    assertString(message, 'message')
+  })
+  return config
+}
+
+export const validatePublishConfig = (config: IBaseConfig): TPublishConfig => {
+  assert.ok(Array.isArray(config.data), 'Data in config file should be an array')
+  config.data.forEach(({ name, version, filePath, access }) => {
+    assertString(name, 'name')
+    assertString(version, 'version')
+    assertString(filePath, 'filePath')
+    assert.ok(access === 'public' || access === 'restricted', 'access should be `public` or `restricted`')
+  })
   return config
 }

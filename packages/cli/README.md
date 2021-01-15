@@ -13,31 +13,6 @@ You can call thus utility without installation via `npx`
 ```shell script
 npx @qiwi/npm-batch-cli --config=some/path/config.json
 ```
-Output:
-```text
-info attempt registry request try #1 at 8:28:25 PM
-http request GET https://registry.npmjs.org/gen-tree-lib?write=true
-info attempt registry request try #1 at 8:28:25 PM
-http request GET https://registry.npmjs.org/foobarbazbat?write=true
-http 404 https://registry.npmjs.org/foobarbazbat?write=true
-http 200 https://registry.npmjs.org/gen-tree-lib?write=true
-info attempt registry request try #1 at 8:28:26 PM
-http request PUT https://registry.npmjs.org/gen-tree-lib
-http 200 https://registry.npmjs.org/gen-tree-lib
-Following packages are deprecated successfully:
-┌─────────┬────────────────┬─────────┬──────────────────────────────┐
-│ (index) │  packageName   │ version │           message            │
-├─────────┼────────────────┼─────────┼──────────────────────────────┤
-│    0    │ 'gen-tree-lib' │   '*'   │ 'gen-tree-lib is deprecated' │
-└─────────┴────────────────┴─────────┴──────────────────────────────┘
-
-Following packages are not deprecated due to errors:
-┌─────────┬────────────────┬──────────┬─────────────────────────────────────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────┐
-│ (index) │  packageName   │ version  │                         message                         │                                         error                                         │
-├─────────┼────────────────┼──────────┼─────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┤
-│    0    │ 'foobarbazbat' │ '<1.3.2' │ 'foobarbazbat@<1.3.2 contains critical vulnerabilities' │ 'Registry returned 404 for GET on https://registry.npmjs.org/foobarbazbat?write=true' │
-└─────────┴────────────────┴──────────┴─────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
-```
 
 # Config file example
 ## Deprecation/Un-deprecation
@@ -71,19 +46,65 @@ In this example all versions of `gen-tree-lib` and `foobarbazbat@<1.3.2` will be
 
 ```
 Output:
+```text
+Following packages are deprecated successfully:
+┌─────────┬────────────────┬─────────┬──────────────────────────────┐
+│ (index) │  packageName   │ version │           message            │
+├─────────┼────────────────┼─────────┼──────────────────────────────┤
+│    0    │ 'gen-tree-lib' │   '*'   │ 'gen-tree-lib is deprecated' │
+└─────────┴────────────────┴─────────┴──────────────────────────────┘
 
-You can use authorization via token as in example above, or simple username and password pair:
+Following packages are not deprecated due to errors:
+┌─────────┬────────────────┬──────────┬─────────────────────────────────────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────┐
+│ (index) │  packageName   │ version  │                         message                         │                                         error                                         │
+├─────────┼────────────────┼──────────┼─────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────┤
+│    0    │ 'foobarbazbat' │ '<1.3.2' │ 'foobarbazbat@<1.3.2 contains critical vulnerabilities' │ 'Registry returned 404 for GET on https://registry.npmjs.org/foobarbazbat?write=true' │
+└─────────┴────────────────┴──────────┴─────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
+```
+## Publishing
+You should specify a path in `filePath` to `.tar.gz` archive of package to publish.
+Access may be `publish` or `restricted`.
 ```json
 {
     "registryUrl": "https://registry.npmjs.org",
     "auth": {
         "username": "username",
-        "password": "password"
+        "password": "password",
+        "email": "email@email.com"
     },
-    ...
+    "action": "publish",
+    "data": [
+        {
+            "name": "@test/package-12-01-21-1",
+            "version": "1.0.0",
+            "filePath": "test-package-12-01-21-1.tar.gz",
+            "access": "public"
+        },
+        {
+            "name": "@test/package-12-01-21-5",
+            "version": "1.0.0",
+            "filePath": "test-package-12-01-21-2.tar.gz",
+            "access": "public"
+        }
+    ]
 }
 ```
-# Throttling
+Output:
+```text
+Following packages are published successfully:
+┌─────────┬────────────────────────────┬─────────┬──────────────────────────────────┬──────────┐
+│ (index) │            name            │ version │             filePath             │  access  │
+├─────────┼────────────────────────────┼─────────┼──────────────────────────────────┼──────────┤
+│    0    │ '@test/package-15-01-21-1' │ '1.0.0' │ 'test-package-15-01-21-1.tar.gz' │ 'public' │
+│    1    │ '@test/package-15-01-21-2' │ '1.0.0' │ 'test-package-15-01-21-2.tar.gz' │ 'public' │
+│    2    │ '@test/package-15-01-21-3' │ '1.0.0' │ 'test-package-15-01-21-2.tar.gz' │ 'public' │
+└─────────┴────────────────────────────┴─────────┴──────────────────────────────────┴──────────┘
+```
+# Authorization
+You can use authorization via token as in example of [deprecation](#deprecationun-deprecation), or username/password and email as in example of [publishing](#publishing)
+# Configuration
+You can specify configuration options in `batch` root field of config object.
+## Throttling
 Utility limits request rate to registry. By default, utility makes maximum 10 requests per second.
 You can specify your own rate limit.
 In this example maximum 2 requests per 500 ms will be made.
@@ -92,7 +113,8 @@ In this example maximum 2 requests per 500 ms will be made.
     "registryUrl": "https://registry.npmjs.org",
     "auth": {
         "username": "username",
-        "password": "password"
+        "password": "password",
+        "email": "email@email.com"
     },
     "batch": {
         "ratelimit": {
@@ -109,7 +131,8 @@ You can specify several rate limits:
     "registryUrl": "https://registry.npmjs.org",
     "auth": {
         "username": "username",
-        "password": "password"
+        "password": "password",
+        "email": "email@email.com"
     },
     "batch": {
         "skipErrors": true,
@@ -128,5 +151,24 @@ You can specify several rate limits:
     ...
 }
 ```
+## Other settings
 Flag `skipErrors` allows utility to continue on errors.
+```json
+{
+    ...
+    "batch": {
+        "skipErrors": true
+    },
+    ...
+}
+```
 Flag `jsonOutput` prints result in JSON format.
+```json
+{
+    ...
+    "batch": {
+        "jsonOutput": true
+    },
+    ...
+}
+```

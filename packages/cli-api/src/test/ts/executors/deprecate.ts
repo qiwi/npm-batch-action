@@ -4,12 +4,12 @@ import {
   getFailedResults,
   handleSettledResults,
   performDeprecation,
-  printResults,
   processResults,
   TDeprecationConfig
 } from '../../../main/ts'
 import * as deprecation from '../../../main/ts/executors/deprecate'
 import { mockOutput } from '../utils'
+import * as misc from '../../../main/ts/utils/misc'
 
 const registryUrl = 'http://localhost'
 const config: TDeprecationConfig = {
@@ -87,72 +87,17 @@ describe('processResults', () => {
     expect(getFailedResults).toHaveBeenCalled()
   })
 
-  it('normalizes settled results', () => {
-    mockOutput()
-    const handleSettledResultsSpy = jest.spyOn(deprecation, 'handleSettledResults')
-
-    // eslint-disable-next-line unicorn/no-null
-    processResults([{ status: 'fulfilled', value: null }, { status: 'fulfilled', value: null }], {
-      ...config,
-      batch: {
-        ...config.batch,
-        skipErrors: true
-      }
-    })
-
-    expect(handleSettledResultsSpy).toHaveBeenCalled()
-  })
-})
-
-describe('printResults', function () {
-  it('prints successful results only when they are presented', () => {
-    const consoleMock = {
-      log: jest.fn(),
-      table: jest.fn(),
-      error: jest.fn()
+  it('prints output in JSON when flag is true', async () => {
+    const npmClientMock = {
+      deprecateBatch: jest.fn(() => Promise.resolve([]))
     }
 
-    const failedPackages: any[] = []
-    printResults(config.data, failedPackages, false, consoleMock as any)
-    expect(consoleMock.log).toHaveBeenCalledWith(expect.stringContaining('success'))
-    expect(consoleMock.table).toHaveBeenCalledWith(config.data, expect.any(Array))
-    expect(consoleMock.error).not.toHaveBeenCalledWith(expect.stringContaining('errors'))
-    expect(consoleMock.table).not.toHaveBeenCalledWith(failedPackages, expect.any(Array))
-  })
+    const printResultsJsonSpy = jest.spyOn(misc, 'printResultsJson')
+      .mockImplementation(() => { /* noop */ })
 
-  it('does not print successful results when they are not presented', () => {
-    const consoleMock = {
-      log: jest.fn(),
-      table: jest.fn(),
-      error: jest.fn()
-    }
+    await performDeprecation({ ...config, batch: { jsonOutput: true }}, npmClientMock as any)
 
-    const successfulPackages: any[] = []
-    const failedPackages = config.data.map(item => ({ ...item, error: 'error' }))
-    printResults(successfulPackages, failedPackages, false, consoleMock as any)
-    expect(consoleMock.log).not.toHaveBeenCalledWith(expect.stringContaining('success'))
-    expect(consoleMock.table).not.toHaveBeenCalledWith(successfulPackages, expect.any(Array))
-    expect(consoleMock.error).toHaveBeenCalledWith(expect.stringContaining('errors'))
-    expect(consoleMock.table).toHaveBeenCalledWith(failedPackages, expect.any(Array))
-  })
-
-  it('prints results in JSON when appropriate flag is presented', () => {
-    const consoleMock = {
-      log: jest.fn(),
-      table: jest.fn(),
-      error: jest.fn()
-    }
-    const successfulPackages: any[] = []
-    const failedPackages: any[] = []
-    printResults(successfulPackages, failedPackages, true, consoleMock as any)
-    expect(consoleMock.log).toHaveBeenCalledWith(JSON.stringify(
-      { successfulPackages, failedPackages },
-      null, // eslint-disable-line unicorn/no-null
-      '\t'
-    ))
-
-    expect(consoleMock.error).not.toHaveBeenCalled()
-    expect(consoleMock.table).not.toHaveBeenCalled()
+    expect(printResultsJsonSpy).toHaveBeenCalledWith([], [])
   })
 })
 

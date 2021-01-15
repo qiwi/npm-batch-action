@@ -1,4 +1,4 @@
-import { validateBaseConfig, validateDeprecationConfig } from '../../../main/ts'
+import { validateBaseConfig, validateDeprecationConfig, validatePublishConfig } from '../../../main/ts'
 
 type TTestCase = {
   description: string
@@ -89,35 +89,130 @@ describe('validateBaseConfig', () => {
   testCases.forEach(validatorTestFactory(validateBaseConfig))
 })
 
+const commonTestCases: TTestCase[] = [
+  {
+    description: 'does not allow config without data',
+    input: {
+      auth,
+      action: 'deprecate',
+    },
+    success: false,
+  },
+  {
+    description: 'does not allow config data of wrong type',
+    input: {
+      auth,
+      action: 'deprecate',
+      data: 'data',
+    },
+    success: false,
+  },
+  {
+    description: 'allows array data',
+    input: {
+      auth,
+      action: 'deprecate',
+      data: [],
+    },
+    success: true,
+  },
+]
+
 describe('validateDeprecationConfig', () => {
   const testCases: TTestCase[] = [
+    ...commonTestCases,
     {
-      description: 'does not allow config without data',
+      description: 'allows array data with correct values',
       input: {
         auth,
         action: 'deprecate',
-      },
-      success: false,
-    },
-    {
-      description: 'does not allow config data of wrong type',
-      input: {
-        auth,
-        action: 'deprecate',
-        data: 'data',
-      },
-      success: false,
-    },
-    {
-      description: 'allows array data',
-      input: {
-        auth,
-        action: 'deprecate',
-        data: [],
+        data: [
+          {
+            packageName: 'foo',
+            version: '1.0.0',
+            message: 'message'
+          },
+          {
+            packageName: 'bar',
+            version: '1.0.0',
+            message: 'message'
+          }
+        ],
       },
       success: true,
-    }
+    },
+    {
+      description: 'does not allow array data with incorrect values',
+      input: {
+        auth,
+        action: 'deprecate',
+        data: [
+          {
+            packageName: 'foo',
+            version: '1.0.0',
+            message: 'message'
+          },
+          {
+            packageName: 42,
+            version: '1.0.0',
+            message: 'message'
+          }
+        ],
+      },
+      success: false,
+    },
   ]
 
   testCases.forEach(validatorTestFactory(validateDeprecationConfig))
+})
+
+describe('validatePublishConfig', () => {
+  const testCases: TTestCase[] = [
+    ...commonTestCases,
+    {
+      description: 'allows array data with correct values',
+      input: {
+        auth,
+        action: 'deprecate',
+        data: [
+          {
+            name: 'foo',
+            version: '1.0.0',
+            filePath: 'foo.tar.gz',
+            access: 'public'
+          },
+          {
+            name: 'bar',
+            version: '1.0.0',
+            filePath: 'bar.tar.gz',
+            access: 'public'
+          }
+        ],
+      },
+      success: true,
+    },
+    {
+      description: 'does not allow array data with incorrect values',
+      input: {
+        auth,
+        action: 'deprecate',
+        data: [
+          {
+            name: 'foo',
+            version: '1.0.0',
+            filePath: 'file.tar.gz',
+            access: 'public'
+          },
+          {
+            packageName: 42,
+            version: '1.0.0',
+            message: 'message'
+          }
+        ],
+      },
+      success: false,
+    },
+  ]
+
+  testCases.forEach(validatorTestFactory(validatePublishConfig))
 })

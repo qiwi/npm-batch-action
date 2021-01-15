@@ -1,30 +1,45 @@
-import { IDeprecatePackageParams, NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
+import { IDeprecatePackageParams, NpmRegClientWrapper, INpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
 
 import { defaultRateLimit } from '../default'
 import { TDeprecationConfig } from '../interfaces'
-import { withRateLimit } from '../utils'
+import { printResults, printResultsJson, withRateLimit } from '../utils'
 
-export const performDeprecation = async (config: TDeprecationConfig): Promise<void> => {
+export const performDeprecation = async (
+  config: TDeprecationConfig,
+  customBatchClient?: INpmRegClientWrapper
+): Promise<void> => {
   const regClient = new RegClient()
-  const batchClient = new NpmRegClientWrapper(
+  const batchClient = customBatchClient || new NpmRegClientWrapper(
     config.registryUrl,
     config.auth,
     withRateLimit<RegClient>(regClient, config.batch?.ratelimit || defaultRateLimit, ['deprecate'])
   )
 
   return batchClient
-    .deprecateBatch(config.data, config.batch?.skipErrors)
-    .then(data => processResults(data, config))
+      .deprecateBatch(config.data)
+      .then(data => processResults(handleSettledResults(data), config))
 }
 
 export const processResults = (results: any[], config: TDeprecationConfig): void => {
-  const normalizedResults = config.batch?.skipErrors ? handleSettledResults(results) : results
-  const enrichedResults = enrichResults(normalizedResults, config.data)
+  const enrichedResults = enrichResults(results, config.data)
+  const successfulResults = getSuccessfulResults(enrichedResults)
+  const failedResults = getFailedResults(enrichedResults)
+
+  if (config.batch?.jsonOutput) {
+    printResultsJson(
+      successfulResults,
+      failedResults
+    )
+    return
+  }
 
   printResults(
-    getSuccessfulResults(enrichedResults),
-    getFailedResults(enrichedResults),
-    config.batch?.jsonOutput
+    successfulResults,
+    failedResults,
+    ['packageName', 'version', 'message'],
+    ['packageName', 'version', 'message', 'error'],
+    'Following packages are deprecated successfully:',
+    'Following packages are not deprecated due to errors:'
   )
 }
 
@@ -55,34 +70,3 @@ export const getFailedResults = (
   results
     .filter(item => item.result !== null)
     .map(item => ({ ...item.packageInfo, error: item.result.message || item.result }))
-
-export const printResults = (
-  successfulPackages: Array<IDeprecatePackageParams>,
-  failedPackages: Array<IDeprecatePackageParams & { error: any }>,
-  jsonOutput?: boolean,
-  logger = console
-): void => {
-  if (jsonOutput) {
-    logger.log(
-      JSON.stringify(
-        {
-          successfulPackages,
-          failedPackages
-        },
-        null, // eslint-disable-line unicorn/no-null
-        '\t'
-      )
-    )
-    return
-  }
-
-  if (successfulPackages.length > 0) {
-    logger.log('Following packages are deprecated successfully:')
-    logger.table(successfulPackages, ['packageName', 'version', 'message'])
-  }
-
-  if (failedPackages.length > 0) {
-    logger.error('Following packages are not deprecated due to errors:')
-    logger.table(failedPackages, ['packageName', 'version', 'message', 'error'])
-  }
-}

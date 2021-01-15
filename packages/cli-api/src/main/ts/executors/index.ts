@@ -1,1 +1,1 @@
-export * from './deprecation'
+export * from './deprecate'
