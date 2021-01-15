@@ -1,4 +1,4 @@
-import { IDeprecatePackageParams, INpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
+import { IDeprecatePackageParams, INpmRegClientWrapper, RegClient, TBatchResult } from '@qiwi/npm-batch-client'
 
 import { TDeprecationConfig } from '../interfaces'
 import { npmRegClientWrapperFactory, printResults, printResultsJson } from '../utils'
@@ -14,7 +14,9 @@ export const performDeprecation = async (
       .then(data => processResults(handleSettledResults(data), config))
 }
 
-export const processResults = (results: any[], config: TDeprecationConfig): void => {
+type THandledValue = null | PromiseRejectedResult['reason']
+
+export const processResults = (results: THandledValue[], config: TDeprecationConfig): void => {
   const enrichedResults = enrichResults(results, config.data)
   const successfulResults = getSuccessfulResults(enrichedResults)
   const failedResults = getFailedResults(enrichedResults)
@@ -38,14 +40,17 @@ export const processResults = (results: any[], config: TDeprecationConfig): void
 }
 
 type TEnrichedBatchResult = {
-  result: any
+  result: THandledValue
   packageInfo: IDeprecatePackageParams
 }
 
-export const enrichResults = (results: any[], data: IDeprecatePackageParams[]): TEnrichedBatchResult[] =>
+export const enrichResults = (
+  results: THandledValue[],
+  data: IDeprecatePackageParams[]
+): TEnrichedBatchResult[] =>
   results.map((result, i) => ({ result, packageInfo: data[i] }))
 
-export const handleSettledResults = (results: PromiseSettledResult<any>[]): any[] =>
+export const handleSettledResults = (results: TBatchResult<null>[]): THandledValue[] =>
   results.map(result => result.status === 'rejected'
     ? result.reason
     : result.value

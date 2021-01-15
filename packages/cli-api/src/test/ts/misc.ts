@@ -1,6 +1,7 @@
-import { npmRegClientWrapperFactory, printResults, printResultsJson } from '../../main/ts/utils/misc'
 import { IBaseConfig } from '@qiwi/npm-batch-cli-api'
 import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
+
+import { npmRegClientWrapperFactory, printResults, printResultsJson } from '../../main/ts/utils/misc'
 
 describe('printResults', function () {
   it('prints successful results only when they are presented', () => {

@@ -8,8 +8,8 @@ import {
   TDeprecationConfig
 } from '../../../main/ts'
 import * as deprecation from '../../../main/ts/executors/deprecate'
-import { mockOutput } from '../utils'
 import * as misc from '../../../main/ts/utils/misc'
+import { mockOutput } from '../utils'
 
 const registryUrl = 'http://localhost'
 const config: TDeprecationConfig = {
@@ -115,10 +115,10 @@ describe('utils', () => {
 
   test('handleSettledResults normalizes fulfilled and rejected results', () => {
     expect(handleSettledResults([
-      { status: 'fulfilled', value: 'value' },
+      { status: 'fulfilled', value: null }, // eslint-disable-line unicorn/no-null
       { status: 'rejected', reason: 'reason' },
     ])).toEqual([
-      'value',
+      null, // eslint-disable-line unicorn/no-null
       'reason'
     ])
   })

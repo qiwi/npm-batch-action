@@ -26,7 +26,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     this.client = client || new RegClient()
   }
 
-  deprecate(packageName: string, version: string, message: string): Promise<any> {
+  deprecate(packageName: string, version: string, message: string): Promise<null> {
     return new Promise<any>(
       (resolve, reject) => {
         try {
@@ -49,7 +49,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   deprecateBatch(
     params: Array<IDeprecatePackageParams>,
     skipErrors?: boolean
-  ): Promise<TBatchResult<any>[]> {
+  ): Promise<TBatchResult<null>[]> {
     return NpmRegClientWrapper.performBatchActions(
       params,
       ({ packageName, version, message }) => this.deprecate(packageName, version, message),
@@ -60,11 +60,11 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   unDeprecateBatch(
     params: Array<IPackageParams>,
     skipErrors?: boolean
-  ): Promise<TBatchResult<any>[]> {
+  ): Promise<TBatchResult<null>[]> {
     return this.deprecateBatch(params.map(item => ({ ...item, message: '' })), skipErrors)
   }
 
-  unDeprecate(packageName: string, version: string): Promise<any> {
+  unDeprecate(packageName: string, version: string): Promise<null> {
     return this.deprecate(packageName, version, '')
   }
 

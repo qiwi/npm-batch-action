@@ -29,22 +29,22 @@ export interface INpmRegClientWrapper {
     packageName: string,
     version: string,
     message: string
-  ): Promise<any>
+  ): Promise<null>
 
   unDeprecate(
     packageName: string,
     version: string,
-  ): Promise<any>
+  ): Promise<null>
 
   deprecateBatch(
     params: Array<IDeprecatePackageParams>,
     skipErrors?: boolean
-  ): Promise<TBatchResult<any>[]>
+  ): Promise<TBatchResult<null>[]>
 
   unDeprecateBatch(
     params: Array<IPackageParams>,
     skipErrors?: boolean
-  ): Promise<TBatchResult<any>[]>
+  ): Promise<TBatchResult<null>[]>
 
   get(
     packageName: string
