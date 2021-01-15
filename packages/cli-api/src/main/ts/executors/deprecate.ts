@@ -7,8 +7,7 @@ export const performDeprecation = async (
   config: TDeprecationConfig,
   customBatchClient?: INpmRegClientWrapper
 ): Promise<void> => {
-  const regClient = new RegClient()
-  const batchClient = customBatchClient || npmRegClientWrapperFactory(config, ['deprecate'], regClient)
+  const batchClient = customBatchClient || npmRegClientWrapperFactory(config, ['deprecate'], new RegClient())
 
   return batchClient
       .deprecateBatch(config.data)
@@ -43,8 +42,8 @@ type TEnrichedBatchResult = {
   packageInfo: IDeprecatePackageParams
 }
 
-export const enrichResults = (normalizedResults: any[], data: IDeprecatePackageParams[]): TEnrichedBatchResult[] =>
-  normalizedResults.map((result, i) => ({ result, packageInfo: data[i] }))
+export const enrichResults = (results: any[], data: IDeprecatePackageParams[]): TEnrichedBatchResult[] =>
+  results.map((result, i) => ({ result, packageInfo: data[i] }))
 
 export const handleSettledResults = (results: PromiseSettledResult<any>[]): any[] =>
   results.map(result => result.status === 'rejected'

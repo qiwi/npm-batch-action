@@ -13,8 +13,7 @@ export const performPublish = (
   config: TPublishConfig,
   customBatchClient?: INpmRegClientWrapper
 ): Promise<void> => {
-  const regClient = new RegClient()
-  const batchClient = customBatchClient || npmRegClientWrapperFactory(config, ['publish'], regClient)
+  const batchClient = customBatchClient || npmRegClientWrapperFactory(config, ['publish'], new RegClient())
 
   return batchClient.publishBatch(config.data)
     .then(data => processPublishResults(data, config))

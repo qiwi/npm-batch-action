@@ -7,6 +7,7 @@ import { defaultRateLimit } from '../default'
 
 export const readFileToString = (path: string): string => readFileSync(path).toString()
 
+// TODO migrate to blork - needs ts libdefs to be added at first
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const assertString = (value: any, name: string): void => {
   assert.ok(typeof value === 'string', `${name} should be a string`)
