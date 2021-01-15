@@ -1,19 +1,14 @@
-import { IDeprecatePackageParams, NpmRegClientWrapper, INpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
+import { IDeprecatePackageParams, INpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
 
-import { defaultRateLimit } from '../default'
 import { TDeprecationConfig } from '../interfaces'
-import { printResults, printResultsJson, withRateLimit } from '../utils'
+import { npmRegClientWrapperFactory, printResults, printResultsJson } from '../utils'
 
 export const performDeprecation = async (
   config: TDeprecationConfig,
   customBatchClient?: INpmRegClientWrapper
 ): Promise<void> => {
   const regClient = new RegClient()
-  const batchClient = customBatchClient || new NpmRegClientWrapper(
-    config.registryUrl,
-    config.auth,
-    withRateLimit<RegClient>(regClient, config.batch?.ratelimit || defaultRateLimit, ['deprecate'])
-  )
+  const batchClient = customBatchClient || npmRegClientWrapperFactory(config, ['deprecate'], regClient)
 
   return batchClient
       .deprecateBatch(config.data)

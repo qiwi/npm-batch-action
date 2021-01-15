@@ -1,26 +1,20 @@
 import {
   INpmRegClientWrapper,
-  NpmRegClientWrapper,
   RegClient,
   TBatchResult,
   TPublishResult,
   TTarballOpts
 } from '@qiwi/npm-batch-client'
 
-import { defaultRateLimit } from '../default'
 import { TPublishConfig } from '../interfaces'
-import { printResults, printResultsJson, withRateLimit } from '../utils'
+import { npmRegClientWrapperFactory, printResults, printResultsJson } from '../utils'
 
 export const performPublish = (
   config: TPublishConfig,
   customBatchClient?: INpmRegClientWrapper
 ): Promise<void> => {
   const regClient = new RegClient()
-  const batchClient = customBatchClient || new NpmRegClientWrapper(
-    config.registryUrl,
-    config.auth,
-    withRateLimit<RegClient>(regClient, config.batch?.ratelimit || defaultRateLimit, ['publish'])
-  )
+  const batchClient = customBatchClient || npmRegClientWrapperFactory(config, ['publish'], regClient)
 
   return batchClient.publishBatch(config.data)
     .then(data => processPublishResults(data, config))

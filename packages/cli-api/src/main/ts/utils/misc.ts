@@ -1,5 +1,9 @@
 import assert from 'assert'
 import { readFileSync } from 'fs'
+import { IBaseConfig } from '../interfaces'
+import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
+import { withRateLimit } from './withRateLimit'
+import { defaultRateLimit } from '../default'
 
 export const readFileToString = (path: string): string => readFileSync(path).toString()
 
@@ -44,3 +48,13 @@ export const printResults = (
     logger.table(failedPackages, failedPackagesFields)
   }
 }
+
+export const npmRegClientWrapperFactory = (
+  config: IBaseConfig,
+  limitedMethods: string[],
+  regClient: RegClient
+) => new NpmRegClientWrapper(
+  config.registryUrl,
+  config.auth,
+  withRateLimit<RegClient>(regClient, config.batch?.ratelimit || defaultRateLimit, limitedMethods)
+)

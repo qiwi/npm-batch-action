@@ -1,4 +1,6 @@
-import { printResults, printResultsJson } from '../../main/ts/utils/misc'
+import { npmRegClientWrapperFactory, printResults, printResultsJson } from '../../main/ts/utils/misc'
+import { IBaseConfig } from '@qiwi/npm-batch-cli-api'
+import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
 
 describe('printResults', function () {
   it('prints successful results only when they are presented', () => {
@@ -62,5 +64,20 @@ describe('printResultsJson', () => {
     printResultsJson([], [], consoleMock as any)
     expect(stringifySpy).toHaveBeenCalled()
     expect(consoleMock.log).toHaveBeenCalled()
+  })
+})
+
+describe('npmRegClientWrapperFactory', () => {
+  it('returns instance of NpmRegClientWrapperFactory', () => {
+    const config: IBaseConfig<string[]> = {
+      registryUrl: 'http://localhost',
+      auth: {
+        token: 'foo'
+      },
+      action: 'deprecate',
+      data: []
+    }
+    const wrapper = npmRegClientWrapperFactory(config, [], new RegClient())
+    expect(wrapper).toBeInstanceOf(NpmRegClientWrapper)
   })
 })
