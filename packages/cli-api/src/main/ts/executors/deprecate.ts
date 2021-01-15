@@ -68,4 +68,4 @@ export const getFailedResults = (
 ): Array<IDeprecatePackageParams & { error: any }> =>
   results
     .filter(item => item.result !== null)
-    .map(item => ({ ...item.packageInfo, error: item.result.message || item.result }))
+    .map(item => ({ ...item.packageInfo, error: item.result.message ?? item.result }))
