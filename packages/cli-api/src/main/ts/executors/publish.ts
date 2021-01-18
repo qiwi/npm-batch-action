@@ -41,7 +41,7 @@ export const processPublishResults = (results: TBatchResult<TPublishResult>[], c
     }))
 
   if (config.batch?.jsonOutput) {
-    printResultsJson(successfulPackages, failedPackages)
+    printResultsJson({ successfulPackages, failedPackages })
     return
   }
 

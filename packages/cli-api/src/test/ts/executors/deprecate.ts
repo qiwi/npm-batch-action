@@ -97,7 +97,10 @@ describe('processResults', () => {
 
     await performDeprecation({ ...config, batch: { jsonOutput: true }}, npmClientMock as any)
 
-    expect(printResultsJsonSpy).toHaveBeenCalledWith([], [])
+    expect(printResultsJsonSpy).toHaveBeenCalledWith({
+      successfulResults: [],
+      failedResults: []
+    })
   })
 })
 

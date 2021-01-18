@@ -15,16 +15,12 @@ export const assertString = (value: any, name: string): void => {
 }
 
 export const printResultsJson = (
-  successfulPackages: Array<any>,
-  failedPackages: Array<any>,
+  results: Record<string, any>,
   logger = console
 ): void => {
   logger.log(
     JSON.stringify(
-      {
-        successfulPackages,
-        failedPackages
-      },
+      results,
       null, // eslint-disable-line unicorn/no-null
       '\t'
     )
