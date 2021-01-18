@@ -74,3 +74,7 @@ export type TNpmRegClientAuth = {
   token: string,
   alwaysAuth?: boolean
 }
+
+export {
+  Packument
+}

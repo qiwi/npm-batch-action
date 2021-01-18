@@ -75,10 +75,15 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   get(packageName: string): Promise<Packument> {
     return new Promise<Packument>(
       (resolve, reject) => {
+        const callback = NpmRegClientWrapper.callbackFactory(resolve, reject)
         try {
-          this.client.get(this.getPackageUrl(packageName), {}, (_, data) => resolve(data))
+          this.client.get(
+            this.getPackageUrl(packageName),
+            {},
+            callback
+          )
         } catch (e) {
-          reject(e)
+          callback(e)
         }
       }
     )
@@ -140,7 +145,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
   ) {
     return (
       err: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
-      data: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
+      data?: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
     ): void => {
       if (err) {
         reject(err)
