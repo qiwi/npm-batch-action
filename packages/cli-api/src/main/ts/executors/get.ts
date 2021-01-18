@@ -1,8 +1,7 @@
 import { INpmRegClientWrapper, Packument, RegClient, TBatchResult } from '@qiwi/npm-batch-client'
-import { writeFileSync } from 'fs'
 
 import { TGetConfig } from '../interfaces'
-import { npmRegClientWrapperFactory, printResults, printResultsJson } from '../utils'
+import { npmRegClientWrapperFactory, printResults, printResultsJson, writeToFile } from '../utils'
 
 export const performGet = (
   config: TGetConfig,
@@ -14,35 +13,38 @@ export const performGet = (
     .then(results => processGetResults(results, config))
 }
 
+export const isResultSuccessful = (
+  item: PromiseSettledResult<Packument>
+): item is PromiseFulfilledResult<Packument> & { name: string } =>
+  item.status === 'fulfilled' &&
+  typeof item.value === 'object' &&
+  item.value !== null &&
+  !(item.value as any).error
+
+export const isResultFailed = (item: PromiseSettledResult<Packument>): boolean =>
+  item.status === 'rejected' ||
+  typeof item.value !== 'object' ||
+  !item.value ||
+  (item.value as any).error
+
+export const getErrorMessage = (item: PromiseSettledResult<Packument>): string =>
+  item.status === 'rejected'
+    ? item.reason?.message ?? item.reason
+    : `got ${typeof item.value === 'object' ? JSON.stringify(item.value) : item.value} instead of Packument`
+
+
 export const processGetResults = (
   results: TBatchResult<Packument>[],
   config: TGetConfig
 ): void => {
   const enrichedResults = results.map((item, i) => ({ ...item, name: config.data[i] }))
   const packuments = enrichedResults
-    .filter(
-      (item): item is PromiseFulfilledResult<Packument> & { name: string } =>
-        item.status === 'fulfilled' &&
-        typeof item.value === 'object' &&
-        item.value !== null &&
-        !(item.value as any).error
-    )
+    .filter(isResultSuccessful)
     .map(({ name, value }) => ({ name, value }))
   const successfulPackages = packuments.map(({ name }) => ({ name }))
   const failedPackages = enrichedResults
-    .filter((item) =>
-      item.status === 'rejected' ||
-      typeof item.value !== 'object' ||
-      item.value === null ||
-      (item.value as any).error
-    )
-    .map(item =>
-      ({
-        name: item.name,
-        error: item.status === 'rejected'
-          ? item.reason?.message ?? item.reason
-          : `got ${typeof item.value === 'object' ? JSON.stringify(item.value) : item.value} instead of Packument` })
-    )
+    .filter(isResultFailed)
+    .map(item => ({ name: item.name, error: getErrorMessage(item) }))
 
   if (config.batch?.jsonOutput) {
     printResultsJson({
@@ -53,11 +55,7 @@ export const processGetResults = (
     return
   }
 
-  writeFileSync(config.batch?.path as string, JSON.stringify(
-    packuments,
-    null, // eslint-disable-line unicorn/no-null
-    '\t'
-  ))
+  writeToFile(config.batch?.path as string, packuments)
 
   printResults(
     successfulPackages,

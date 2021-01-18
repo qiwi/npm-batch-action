@@ -1,5 +1,4 @@
 import { Packument, TBatchResult } from '@qiwi/npm-batch-client'
-import fs from 'fs'
 
 import { TGetConfig } from '../../../main/ts'
 import { performGet, processGetResults } from '../../../main/ts/executors/get'
@@ -77,7 +76,7 @@ describe('processGetResults', () => {
     const printResults = jest.spyOn(misc, 'printResults')
       .mockImplementation(() => { /* noop */
       })
-    const writeFileSyncSpy = jest.spyOn(fs, 'writeFileSync')
+    const writeFileSyncSpy = jest.spyOn(misc, 'writeToFile')
       .mockImplementation(() => { /* noop */
       })
     const printResultsJsonSpy = jest.spyOn(misc, 'printResultsJson')
@@ -89,13 +88,7 @@ describe('processGetResults', () => {
     expect(printResultsJsonSpy).not.toHaveBeenCalled()
     expect(writeFileSyncSpy).toHaveBeenCalledWith(
       'foo',
-      JSON.stringify(
-        [
-          { name: 'foo', value: {} }
-        ],
-        null, // eslint-disable-line unicorn/no-null
-        '\t'
-      )
+      [{ name: 'foo', value: {} }],
     )
     expect(printResults).toHaveBeenCalled()
   })
@@ -110,7 +103,7 @@ describe('processGetResults', () => {
     const printResults = jest.spyOn(misc, 'printResults')
       .mockImplementation(() => { /* noop */
       })
-    const writeFileSyncSpy = jest.spyOn(fs, 'writeFileSync')
+    const writeFileSyncSpy = jest.spyOn(misc, 'writeToFile')
       .mockImplementation(() => { /* noop */
       })
     const printResultsJsonSpy = jest.spyOn(misc, 'printResultsJson')
