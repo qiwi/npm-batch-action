@@ -1,3 +1,10 @@
+# @qiwi/npm-batch-client [1.4.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-client@1.3.0...@qiwi/npm-batch-client@1.4.0) (2021-01-18)
+
+
+### Features
+
+* add `get` action ([#16](https://github.com/qiwi/npm-batch-action/issues/16)) ([dc28262](https://github.com/qiwi/npm-batch-action/commit/dc28262d2e3389b4fa66f2238dbb1a8703f3bc88))
+
 # @qiwi/npm-batch-client [1.3.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-client@1.2.0...@qiwi/npm-batch-client@1.3.0) (2021-01-15)
 
 
