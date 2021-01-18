@@ -1,4 +1,9 @@
-import { validateBaseConfig, validateDeprecationConfig, validatePublishConfig } from '../../../main/ts'
+import {
+  validateBaseConfig,
+  validateDeprecationConfig,
+  validateGetConfig,
+  validatePublishConfig
+} from '../../../main/ts'
 
 type TTestCase = {
   description: string
@@ -215,4 +220,65 @@ describe('validatePublishConfig', () => {
   ]
 
   testCases.forEach(validatorTestFactory(validatePublishConfig))
+})
+
+describe('validateGetConfig', () => {
+  const testCases: TTestCase[] = [
+    ...commonTestCases.map(testCase => ({
+      ...testCase,
+      input: {
+        ...testCase.input,
+        batch: { path: 'foo' }
+      }
+    })),
+    {
+      description: 'allows string data',
+      input: {
+        auth,
+        action: 'get',
+        batch: {
+          jsonOutput: true,
+        },
+        data: [
+          'foo',
+          'bar'
+        ]
+      },
+      success: true,
+    },
+    {
+      description: 'does not allow mixed wrong and correct data typees',
+      input: {
+        auth,
+        action: 'get',
+        batch: {
+          path: 'foo'
+        },
+        data: [
+          'foo',
+          undefined,
+          'bar',
+        ]
+      },
+      success: false,
+    },
+    {
+      description: 'does not allow config without path',
+      input: {
+        auth,
+        action: 'get',
+        batch: {
+          path: 'foo'
+        },
+        data: [
+          'foo',
+          undefined,
+          'bar',
+        ]
+      },
+      success: false,
+    }
+  ]
+
+  testCases.forEach(validatorTestFactory(validateGetConfig))
 })
