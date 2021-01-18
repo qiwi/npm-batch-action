@@ -1,6 +1,6 @@
 import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
 import assert from 'assert'
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 
 import { defaultRateLimit } from '../default'
 import { IBaseConfig } from '../interfaces'
@@ -15,16 +15,12 @@ export const assertString = (value: any, name: string): void => {
 }
 
 export const printResultsJson = (
-  successfulPackages: Array<any>,
-  failedPackages: Array<any>,
+  results: Record<string, any>,
   logger = console
 ): void => {
   logger.log(
     JSON.stringify(
-      {
-        successfulPackages,
-        failedPackages
-      },
+      results,
       null, // eslint-disable-line unicorn/no-null
       '\t'
     )
@@ -59,4 +55,12 @@ export const npmRegClientWrapperFactory = (
   config.registryUrl,
   config.auth,
   withRateLimit<RegClient>(regClient, config.batch?.ratelimit || defaultRateLimit, limitedMethods)
+)
+
+export const writeToFile = (
+  path: string,
+  body: Record<string, any>
+): void => writeFileSync(
+  path,
+  JSON.stringify(body, null, '\t') // eslint-disable-line unicorn/no-null
 )

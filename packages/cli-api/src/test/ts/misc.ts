@@ -62,7 +62,10 @@ describe('printResultsJson', () => {
     }
     const stringifySpy = jest.spyOn(JSON, 'stringify')
       .mockImplementation(() => '')
-    printResultsJson([], [], consoleMock as any)
+    printResultsJson(
+      { successfulPackages: [], failedPackages: [] },
+      consoleMock as any
+    )
     expect(stringifySpy).toHaveBeenCalled()
     expect(consoleMock.log).toHaveBeenCalled()
   })

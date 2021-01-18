@@ -1,7 +1,7 @@
 import { IDeprecatePackageParams, TNpmRegClientAuth, TTarballOpts } from '@qiwi/npm-batch-client'
 import { IComplexDelay } from 'push-it-to-the-limit'
 
-export type TNpmAction = 'deprecate' | 'un-deprecate' | 'publish'
+export type TNpmAction = 'deprecate' | 'un-deprecate' | 'publish' | 'get'
 
 export type TRateLimit = IComplexDelay | IComplexDelay[]
 
@@ -12,7 +12,8 @@ export interface IBaseConfig<T = any> {
   batch?: {
     ratelimit?: TRateLimit,
     skipErrors?: boolean,
-    jsonOutput?: boolean
+    jsonOutput?: boolean,
+    path?: string
   },
   data: T,
 }
@@ -20,6 +21,8 @@ export interface IBaseConfig<T = any> {
 export type TPublishConfig = IBaseConfig<Array<TTarballOpts>>
 
 export type TDeprecationConfig = IBaseConfig<Array<IDeprecatePackageParams>>
+
+export type TGetConfig = IBaseConfig<string[]>
 
 export interface ICliArgs {
   config: string

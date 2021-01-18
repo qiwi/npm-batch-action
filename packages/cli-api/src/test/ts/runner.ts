@@ -1,5 +1,6 @@
 import { IBaseConfig, readConfigAndRun } from '../../main/ts'
 import * as deprecation from '../../main/ts/executors/deprecate'
+import * as get from '../../main/ts/executors/get'
 import * as publish from '../../main/ts/executors/publish'
 import * as utils from '../../main/ts/utils/misc'
 import * as validators from '../../main/ts/utils/validators'
@@ -43,6 +44,15 @@ describe('readConfigAndRun', () => {
     jest.spyOn(utils, 'readFileToString')
       .mockImplementation(() => JSON.stringify({ ...config, action: 'publish' }))
     const spy = jest.spyOn(publish, 'performPublish')
+    readConfigAndRun({ config: 'foo' })
+    expect(spy).toHaveBeenCalled()
+  })
+
+  it('calls performGet for get', () => {
+    mockOutput()
+    jest.spyOn(utils, 'readFileToString')
+      .mockImplementation(() => JSON.stringify({ ...config, action: 'get', batch: { path: '' } }))
+    const spy = jest.spyOn(get, 'performGet')
     readConfigAndRun({ config: 'foo' })
     expect(spy).toHaveBeenCalled()
   })

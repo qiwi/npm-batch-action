@@ -22,10 +22,10 @@ export const processResults = (results: THandledValue[], config: TDeprecationCon
   const failedResults = getFailedResults(enrichedResults)
 
   if (config.batch?.jsonOutput) {
-    printResultsJson(
+    printResultsJson({
       successfulResults,
       failedResults
-    )
+    })
     return
   }
 

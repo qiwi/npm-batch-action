@@ -33,7 +33,7 @@ describe('performPublish', () => {
     await performPublish(config, npmClientMock as any)
 
     expect(npmClientMock.publishBatch).toHaveBeenCalledWith(config.data)
-    expect(printResultsJsonSpy).toHaveBeenCalledWith([], [])
+    expect(printResultsJsonSpy).toHaveBeenCalledWith({ successfulPackages: [], failedPackages: [] })
   })
 })
 
@@ -85,9 +85,9 @@ describe('processPublishResults', () => {
 
     processPublishResults(results, nonEmptyConfig)
 
-    expect(printResultsJsonSpy).toHaveBeenCalledWith(
-      [nonEmptyConfig.data[0]],
-      [
+    expect(printResultsJsonSpy).toHaveBeenCalledWith({
+      successfulPackages: [nonEmptyConfig.data[0]],
+      failedPackages: [
         {
           ...nonEmptyConfig.data[1],
           error: 'no data',
@@ -97,7 +97,7 @@ describe('processPublishResults', () => {
           error: 'foo'
         }
       ]
-    )
+    })
   })
 
   it('calls printResults when jsonOutput flag is not set', () => {

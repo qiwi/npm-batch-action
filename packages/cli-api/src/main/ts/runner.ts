@@ -1,7 +1,12 @@
-import { performDeprecation } from './executors'
-import { performPublish } from './executors/publish'
+import { performDeprecation, performGet,performPublish } from './executors'
 import { ICliArgs } from './interfaces'
-import { readFileToString, validateBaseConfig, validateDeprecationConfig, validatePublishConfig } from './utils'
+import {
+  readFileToString,
+  validateBaseConfig,
+  validateDeprecationConfig,
+  validateGetConfig,
+  validatePublishConfig
+} from './utils'
 
 export const run = (configString: string): Promise<void> => {
   const rawConfig = JSON.parse(configString)
@@ -15,6 +20,10 @@ export const run = (configString: string): Promise<void> => {
     case 'publish': {
       const publishConfig = validatePublishConfig(validatedConfig)
       return performPublish(publishConfig)
+    }
+    case 'get': {
+      const getConfig = validateGetConfig(validatedConfig)
+      return performGet(getConfig)
     }
     default:
       throw new Error(`Action ${validatedConfig.action} is not supported`)
