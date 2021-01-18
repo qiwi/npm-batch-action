@@ -79,7 +79,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
         try {
           this.client.get(
             this.getPackageUrl(packageName),
-            {},
+            { auth: this.auth },
             callback
           )
         } catch (e) {

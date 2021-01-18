@@ -100,6 +100,135 @@ Following packages are published successfully:
 │    2    │ '@test/package-15-01-21-3' │ '1.0.0' │ 'test-package-15-01-21-2.tar.gz' │ 'public' │
 └─────────┴────────────────────────────┴─────────┴──────────────────────────────────┴──────────┘
 ```
+## Getting
+Packuments (json files with meta from NPM-registry) of given packages will be written to a file, specified by `batch.path`.
+```json
+{
+    "registryUrl": "https://registry.npmjs.org",
+    "auth": {
+        "username": "username",
+        "password": "password",
+        "email": "email@email.com"
+    },
+    "batch": {
+        "path": "results.json",
+        "skipErrors": true
+    },
+    "action": "get",
+    "data": [
+        "gen-tree-lib",
+        "react-dom",
+        "@qiwi/foo"
+    ]
+}
+```
+Output in console:
+```text
+Packuments of following packages have been written to results.json:
+┌─────────┬────────────────┐
+│ (index) │      name      │
+├─────────┼────────────────┤
+│    0    │ 'gen-tree-lib' │
+│    1    │  'react-dom'   │
+└─────────┴────────────────┘
+Packuments of following packages have not been downloaded because of errors:
+┌─────────┬─────────────┬─────────────────────────┐
+│ (index) │    name     │          error          │
+├─────────┼─────────────┼─────────────────────────┤
+│    0    │ '@qiwi/foo' │ 'Not found : @qiwi/foo' │
+└─────────┴─────────────┴─────────────────────────┘
+
+```
+results.json:
+```text
+[
+    {
+        "name": "gen-tree-lib",
+        "value": {
+            "_id": "gen-tree-lib",
+            "_rev": "48-583faf615cd38b2ad8c28e6c47bac7ec",
+            "name": "gen-tree-lib",
+            "dist-tags": {
+                "latest": "1.8.0"
+            },
+            ...
+        }
+    },
+    {
+        "name": "react-dom",
+        "value": {
+            "_id": "react-dom",
+            "_rev": "619-c672e11f0a03532f37e89a9ea3a57551",
+            "name": "react-dom",
+            "description": "React package for working with the DOM.",
+            "dist-tags": {
+                "latest": "17.0.1",
+                "next": "0.0.0-8e5adfbd7",
+                "experimental": "0.0.0-experimental-27659559e",
+                "untagged": "16.14.0"
+            },
+            ...
+        }
+    }
+]
+```
+If `batch.jsonOutput` is `true` then utility will log all output in JSON format. 
+```json
+{
+    "registryUrl": "https://registry.npmjs.org",
+    "auth": {
+        "username": "username",
+        "password": "password",
+        "email": "email@email.com"
+    },
+    "batch": {
+        "jsonOutput": true,
+        "skipErrors": true
+    },
+    "action": "get",
+    "data": [
+        "gen-tree-lib",
+        "react-dom",
+        "@qiwi/foo"
+    ]
+}
+```
+Output:
+```text
+{
+    "successfulPackages": [
+        {
+            "name": "gen-tree-lib"
+        },
+        {
+            "name": "react-dom"
+        }
+    ],
+    "failedPackages": [
+        {
+            "name": "@qiwi/foo",
+            "error": "Not found : @qiwi/foo"
+        }
+    ],
+    "packuments": [
+        {
+            "name": "gen-tree-lib",
+            "value": {
+                "_id": "gen-tree-lib",
+                "_rev": "48-583faf615cd38b2ad8c28e6c47bac7ec",
+                "name": "gen-tree-lib",
+                "dist-tags": {
+                    "latest": "1.8.0"
+                },
+                "versions": {
+                ...
+                }
+            }
+        },
+        ...
+    ]
+} 
+```
 # Authorization
 You can use authorization via token as in example of [deprecation](#deprecationun-deprecation), or username/password and email as in example of [publishing](#publishing)
 # Configuration
@@ -108,7 +237,7 @@ You can specify configuration options in `batch` root field of config object.
 Utility limits request rate to registry. By default, utility makes maximum 10 requests per second.
 You can specify your own rate limit.
 In this example maximum 2 requests per 500 ms will be made.
-```json
+```text
 {
     "registryUrl": "https://registry.npmjs.org",
     "auth": {
@@ -126,7 +255,7 @@ In this example maximum 2 requests per 500 ms will be made.
 }
 ```
 You can specify several rate limits:
-```json
+```text
 {
     "registryUrl": "https://registry.npmjs.org",
     "auth": {
@@ -153,7 +282,7 @@ You can specify several rate limits:
 ```
 ## Other settings
 Flag `skipErrors` allows utility to continue on errors.
-```json
+```text
 {
     ...
     "batch": {
@@ -163,7 +292,7 @@ Flag `skipErrors` allows utility to continue on errors.
 }
 ```
 Flag `jsonOutput` prints result in JSON format.
-```json
+```text
 {
     ...
     "batch": {
