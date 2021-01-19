@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/npm-batch-cli",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -46,11 +46,11 @@
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/npm-batch-cli-api": "1.4.0",
+    "@qiwi/npm-batch-cli-api": "1.5.0",
     "meow": "^9.0.0"
   },
   "devDependencies": {
-    "@qiwi/npm-batch-client-infra": "1.1.0"
+    "@qiwi/npm-batch-client-infra": "1.2.0"
   },
   "repository": {
     "type": "git",
