@@ -23,7 +23,8 @@
     "CHANGELOG.md",
     "target",
     "typings",
-    "flow-typed"
+    "flow-typed",
+    "buildstamp.json"
   ],
   "scripts": {
     "test": "yarn lint && yarn jest",
@@ -31,7 +32,8 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "yarn lint --fix",
     "test:local": "yarn lint:fix && yarn test && say success || say fail",
-    "clean": "rimraf target typings flow-typed buildcache coverage docs",
+    "clean": "rimraf target typings flow-typed buildcache coverage docs buildstamp.json",
+    "prebuild": "buildstamp --git --out.path buildstamp.json",
     "build": "yarn build:es5 && yarn build:es6 && yarn build:ts && yarn build:libdef && yarn docs",
     "build:es5": "mkdirp target/es5 && tsc -p tsconfig.es5.json",
     "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
@@ -45,9 +47,9 @@
   "dependencies": {
     "@qiwi/deep-proxy": "^1.8.1",
     "@qiwi/npm-batch-client": "1.4.0",
-    "@qiwi/substrate": "^1.19.6",
+    "@qiwi/substrate": "^1.19.7",
     "push-it-to-the-limit": "^1.17.1",
-    "tslib": "^2.0.3"
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@qiwi/npm-batch-client-infra": "1.1.0",
