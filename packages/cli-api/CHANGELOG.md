@@ -1,3 +1,19 @@
+# @qiwi/npm-batch-cli-api [1.5.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-api@1.4.0...@qiwi/npm-batch-cli-api@1.5.0) (2021-01-19)
+
+
+### Features
+
+* add buildstamp, update deps ([#17](https://github.com/qiwi/npm-batch-action/issues/17)) ([4ab1692](https://github.com/qiwi/npm-batch-action/commit/4ab16921056b5569450bf099086e43a2265eb6e4))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/npm-batch-client:** upgraded to 1.5.0
+* **@qiwi/npm-batch-client-infra:** upgraded to 1.2.0
+
 # @qiwi/npm-batch-cli-api [1.4.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-api@1.3.0...@qiwi/npm-batch-cli-api@1.4.0) (2021-01-18)
 
 
