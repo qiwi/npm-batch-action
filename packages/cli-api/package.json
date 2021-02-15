@@ -47,13 +47,13 @@
   "dependencies": {
     "@qiwi/deep-proxy": "^1.8.1",
     "@qiwi/npm-batch-client": "1.5.0",
-    "@qiwi/substrate": "^1.19.7",
+    "@qiwi/substrate": "^1.20.1",
     "push-it-to-the-limit": "^1.17.1",
     "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@qiwi/npm-batch-client-infra": "1.2.0",
-    "nock": "^13.0.5"
+    "nock": "^13.0.7"
   },
   "repository": {
     "type": "git",
