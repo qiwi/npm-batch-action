@@ -64,3 +64,4 @@ buildcache
 .rts2_cache_umd
 
 test.js
+test-*

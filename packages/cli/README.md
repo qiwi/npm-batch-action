@@ -234,7 +234,7 @@ You can use authorization via token as in example of [deprecation](#deprecationu
 # Configuration
 You can specify configuration options in `batch` root field of config object.
 ## Throttling
-Utility limits request rate to registry. By default, utility makes maximum 10 requests per second.
+Utility limits request rate to registry. By default, utility makes maximum 4 requests per second.
 You can specify your own rate limit.
 In this example maximum 2 requests per 500 ms will be made.
 ```text
