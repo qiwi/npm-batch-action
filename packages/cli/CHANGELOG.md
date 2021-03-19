@@ -1,3 +1,18 @@
+## @qiwi/npm-batch-cli [1.5.2](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli@1.5.1...@qiwi/npm-batch-cli@1.5.2) (2021-03-19)
+
+
+### Bug Fixes
+
+* **cli-api:** decrease default rateLimit ([#19](https://github.com/qiwi/npm-batch-action/issues/19)) ([0a5edf0](https://github.com/qiwi/npm-batch-action/commit/0a5edf0990e676b7ddf3a18ab1899c15c78354fe))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/npm-batch-cli-api:** upgraded to 1.5.2
+
 ## @qiwi/npm-batch-cli [1.5.1](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli@1.5.0...@qiwi/npm-batch-cli@1.5.1) (2021-02-15)
 
 
