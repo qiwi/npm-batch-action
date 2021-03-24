@@ -7,13 +7,13 @@ yarn add @qiwi/npm-batch-cli
 ```
 ## Usage
 ```shell script
-@qiwi/npm-batch-cli --config=some/path/config.json
+npm-batch-cli --config=some/path/config.json
 ```
-You can call thus utility without installation via `npx`
+You can call this utility without installation via `npx`
 ```shell script
 npx @qiwi/npm-batch-cli --config=some/path/config.json
 ```
-
+You can use this utility with [@qiwi/nexus-cli](https://github.com/qiwi/nexus/tree/master/packages/cli) for migration between Nexus NPM-repositories.
 # Config file example
 ## Deprecation/Un-deprecation
 If you want to un-deprecate package, pass empty message.

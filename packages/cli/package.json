@@ -10,7 +10,8 @@
     "npm",
     "batch",
     "deprecate",
-    "cli"
+    "cli",
+    "publish"
   ],
   "main": "target/es5/index.js",
   "source": "target/ts/index.ts",
