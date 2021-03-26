@@ -1,3 +1,10 @@
+## @qiwi/npm-batch-cli-api [1.5.3](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-api@1.5.2...@qiwi/npm-batch-cli-api@1.5.3) (2021-03-26)
+
+
+### Bug Fixes
+
+* **cli-api:** add batch ([#21](https://github.com/qiwi/npm-batch-action/issues/21)) ([cdc699d](https://github.com/qiwi/npm-batch-action/commit/cdc699dbba66ac06a606e501632c4515de787c59))
+
 ## @qiwi/npm-batch-cli-api [1.5.2](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-api@1.5.1...@qiwi/npm-batch-cli-api@1.5.2) (2021-03-19)
 
 
