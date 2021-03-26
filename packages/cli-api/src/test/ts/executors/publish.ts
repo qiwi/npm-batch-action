@@ -32,7 +32,7 @@ describe('performPublish', () => {
 
     await performPublish(config, npmClientMock as any)
 
-    expect(npmClientMock.publishBatch).toHaveBeenCalledWith(config.data)
+    expect(npmClientMock.publishBatch).toHaveBeenCalledWith(config.data, undefined)
     expect(printResultsJsonSpy).toHaveBeenCalledWith({ successfulPackages: [], failedPackages: [] })
   })
 })
