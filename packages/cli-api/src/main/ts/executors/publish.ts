@@ -15,7 +15,7 @@ export const performPublish = (
 ): Promise<void> => {
   const batchClient = customBatchClient || npmRegClientWrapperFactory(config, ['publish'], new RegClient())
 
-  return batchClient.publishBatch(config.data)
+  return batchClient.publishBatch(config.data, config.batch?.skipErrors)
     .then(data => processPublishResults(data, config))
     .catch(console.error)
 }
