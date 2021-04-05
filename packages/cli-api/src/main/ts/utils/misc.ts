@@ -1,4 +1,10 @@
-import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
+import {
+  INpmRegClientBatchWrapper,
+  INpmRegClientWrapper,
+  NpmRegClientBatchWrapper,
+  NpmRegClientWrapper,
+  RegClient
+} from '@qiwi/npm-batch-client'
 import assert from 'assert'
 import { readFileSync, writeFileSync } from 'fs'
 
@@ -56,6 +62,10 @@ export const npmRegClientWrapperFactory = (
   config.auth,
   withRateLimit<RegClient>(regClient, config.batch?.ratelimit || defaultRateLimit, limitedMethods)
 )
+
+export const npmRegClientBatchWrapperFactory = (
+  wrapper: INpmRegClientWrapper
+): INpmRegClientBatchWrapper => new NpmRegClientBatchWrapper(wrapper)
 
 export const writeToFile = (
   path: string,

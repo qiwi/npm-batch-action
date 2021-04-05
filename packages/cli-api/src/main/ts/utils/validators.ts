@@ -1,6 +1,6 @@
-import assert from 'assert'
+import { strict as assert } from 'assert'
 
-import { IBaseConfig, TDeprecationConfig, TGetConfig, TPublishConfig } from '../interfaces'
+import { IBaseConfig, TDeprecationConfig, TGetConfig, TPublishConfig, TSetLatestConfig } from '../interfaces'
 import { assertString } from './misc'
 
 const isObject = (data: any) => typeof data === 'object' && data !== null
@@ -51,3 +51,15 @@ export const validateGetConfig = (config: IBaseConfig): TGetConfig => {
   config.data.forEach(name => assertString(name, 'name'))
   return config
 }
+
+export const validateSetLatestConfig = (config: IBaseConfig): TSetLatestConfig => {
+  assert.ok(Array.isArray(config.data), 'Data in config file should be an array') // eslint-disable-line sonarjs/no-duplicate-string
+  config.data.forEach(item => {
+    assertString(item.name, 'name')
+    if (item.version) {
+      assertString(item.version, 'name')
+    }
+  })
+  return config
+}
+

@@ -1,6 +1,6 @@
-import { TBatchResult, TPublishResult } from '@qiwi/npm-batch-client'
+import { TPublishConfig } from '@qiwi/npm-batch-cli-api'
 
-import { performPublish, TPublishConfig } from '../../../main/ts'
+import { performSetLatest,TSetLatestConfig } from '../../../main/ts'
 import * as misc from '../../../main/ts/utils/misc'
 
 const registryUrl = 'http://localhost'
@@ -15,56 +15,46 @@ const config: TPublishConfig = {
   batch: {
     jsonOutput: true
   },
-  action: 'publish',
+  action: 'set-latest',
   data: []
 }
 
-beforeEach(jest.restoreAllMocks)
-
-describe('performPublish', () => {
-  it('calls publish', async () => {
+describe('performSettingLatest', () => {
+  it('calls setLatest', async () => {
     const npmClientMock = {
-      publish: jest.fn(() => Promise.resolve([]))
+      setLatestTag: jest.fn(() => Promise.resolve([]))
     }
     const printResultsJsonSpy = jest.spyOn(misc, 'printResultsJson')
       .mockImplementation(() => { /* noop */ })
 
-    await performPublish(config, npmClientMock as any)
+    await performSetLatest(config, npmClientMock as any)
 
-    expect(npmClientMock.publish).toHaveBeenCalledWith(config.data, undefined)
+    expect(npmClientMock.setLatestTag).toHaveBeenCalledWith(config.data, undefined)
     expect(printResultsJsonSpy).toHaveBeenCalledWith({ successfulPackages: [], failedPackages: [] })
   })
 
   it('prints processed results', async () => {
-    const nonEmptyConfig: TPublishConfig = {
+    const nonEmptyConfig: TSetLatestConfig = {
       ...config,
       data: [
         {
           name: 'foo',
           version: '1.0.0',
-          filePath: 'foo.tar.gz',
-          access: 'public'
         },
         {
           name: 'bar',
           version: '1.0.0',
-          filePath: 'bar.tar.gz',
-          access: 'public'
         },
         {
           name: 'baz',
           version: '1.0.0',
-          filePath: 'bar.tar.gz',
-          access: 'public'
         }
       ]
     }
-    const results: TBatchResult<TPublishResult>[] = [
+    const results: any[] = [
       {
         status: 'fulfilled',
-        value: {
-          success: true
-        }
+        value: undefined
       },
       {
         status: 'fulfilled',
@@ -80,10 +70,10 @@ describe('performPublish', () => {
     const printResultsJsonSpy = jest.spyOn(misc, 'printResultsJson')
       .mockImplementation(() => { /* noop */ })
     const npmClientMock = {
-      publish: jest.fn(() => Promise.resolve(results))
+      setLatestTag: jest.fn(() => Promise.resolve(results))
     }
 
-    await performPublish(nonEmptyConfig, npmClientMock as any)
+    await performSetLatest(nonEmptyConfig, npmClientMock as any)
 
     expect(printResultsJsonSpy).toHaveBeenCalledWith({
       successfulPackages: [nonEmptyConfig.data[0]],
@@ -105,10 +95,10 @@ describe('performPublish', () => {
       .mockImplementation(() => { /* noop */ })
 
     const npmClientMock = {
-      publish: jest.fn(() => Promise.resolve([]))
+      setLatestTag: jest.fn(() => Promise.resolve([]))
     }
 
-    await performPublish({ ...config, batch: undefined }, npmClientMock as any)
+    await performSetLatest({ ...config, batch: undefined }, npmClientMock as any)
 
     expect(printResultsSpy).toHaveBeenCalled()
   })

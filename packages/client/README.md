@@ -179,3 +179,25 @@ const opts = [
 batchWrapper.publish(opts)
 batchWrapper.publish(opts, true) // if you want to ignore errors when executing a batch of actions
 ```
+## Set latest tag
+```js
+const opts = {
+    name: 'packageA',
+    version: '1.0.0' // if version is absent the latest version will be set
+}
+wrapper.setLatestTag(opts)
+```
+## Set latest tag for a list of packages
+```js
+const opts = [
+  {
+    name: 'packageA',
+    version: '1.0.0',
+  },
+  {
+    name: 'packageB' // the latest version will be set
+  },
+]
+batchWrapper.setLatestTag(opts)
+batchWrapper.setLatestTag(opts, true)  // if you want to ignore errors when executing a batch of actions
+```

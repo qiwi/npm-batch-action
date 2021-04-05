@@ -35,11 +35,6 @@ In this example all versions of `gen-tree-lib` and `foobarbazbat@<1.3.2` will be
             "packageName": "foobarbazbat",
             "version": "<1.3.2",
             "message": "foobarbazbat@<1.3.2 contains critical vulnerabilities"
-        },
-        {
-            "packageName": "baz",
-            "version": "<1.2.2",
-            "message": ""
         }
     ]
 }
@@ -114,7 +109,7 @@ Packuments (json files with meta from NPM-registry) of given packages will be wr
         "path": "results.json",
         "skipErrors": true
     },
-    "action": "get",
+    "action": "getPackument",
     "data": [
         "gen-tree-lib",
         "react-dom",
@@ -185,7 +180,7 @@ If `batch.jsonOutput` is `true` then utility will log all output in JSON format.
         "jsonOutput": true,
         "skipErrors": true
     },
-    "action": "get",
+    "action": "getPackument",
     "data": [
         "gen-tree-lib",
         "react-dom",
@@ -228,6 +223,42 @@ Output:
         ...
     ]
 } 
+```
+## Updating tag
+This action assigns given value or the latest version to the tag `latest`.
+Config:
+```json
+{
+    "registryUrl": "https://registry.npmjs.org",
+    "auth": {
+        "token": "12345678-1234-1234-1234-12345678"
+    },
+    "action": "set-latest",
+    "data": [
+        {
+            "name": "gen-tree-lib" // the latest version will be assigned
+        },
+        {
+            "name": "@qiwi/foo",
+            "version": "1.1.0"
+        }
+    ]
+}
+```
+Output:
+```text
+Updated:
+┌─────────┬────────────────┬─────────┐
+│ (index) │      name      │ version │
+├─────────┼────────────────┼─────────┤
+│    0    │ 'gen-tree-lib' │         │
+└─────────┴────────────────┴─────────┘
+Failed:
+┌─────────┬─────────────┬─────────┬──────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ (index) │    name     │ version │                                                reason                                                │
+├─────────┼─────────────┼─────────┼──────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│    0    │ '@qiwi/foo' │ '1.1.0' │ 'Registry returned 403 for PUT on https://registry.npmjs.org/-/package/@qiwi%2ffoo/dist-tags/latest' │
+└─────────┴─────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 # Authorization
 You can use authorization via token as in example of [deprecation](#deprecationun-deprecation), or username/password and email as in example of [publishing](#publishing)

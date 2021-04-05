@@ -2,7 +2,8 @@ import {
   validateBaseConfig,
   validateDeprecationConfig,
   validateGetConfig,
-  validatePublishConfig
+  validatePublishConfig,
+  validateSetLatestConfig,
 } from '../../../main/ts'
 
 type TTestCase = {
@@ -281,4 +282,58 @@ describe('validateGetConfig', () => {
   ]
 
   testCases.forEach(validatorTestFactory(validateGetConfig))
+})
+
+describe('validateSetLatestConfig', () => {
+  const action = 'set-latest'
+  const testCases: TTestCase[] = [
+    ...commonTestCases,
+    {
+      description: 'allows string values',
+      input: {
+        auth,
+        action,
+        data: [
+          {
+            name: 'foo',
+            version: '1.2.3',
+          },
+          {
+            name: 'bar',
+          },
+        ]
+      },
+      success: true,
+    },
+    {
+      description: 'does not allows name as number',
+      input: {
+        auth,
+        action,
+        data: [
+          {
+            name: 42,
+            version: '1.2.3',
+          },
+        ]
+      },
+      success: false,
+    },
+    {
+      description: 'does not allows version as number',
+      input: {
+        auth,
+        action,
+        data: [
+          {
+            name: 'foo',
+            version: 42,
+          },
+        ]
+      },
+      success: false,
+    },
+  ]
+
+  testCases.forEach(validatorTestFactory(validateSetLatestConfig))
 })
