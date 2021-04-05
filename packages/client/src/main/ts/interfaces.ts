@@ -18,51 +18,80 @@ export type TTarballOpts = {
   access: TPackageAccess
 }
 
-export type TPublishResult = {
-  success: boolean
+export type TSetLatestTagOpts = {
+  name: string
+  version?: string
 }
 
+export type TNpmRegistryClientResult = {
+  success: boolean
+  error?: string
+} | null
+
 export type TBatchResult<T> = PromiseSettledResult<T>
+
+export type TDeprecateResult = TNpmRegistryClientResult
+
+export type TPublishResult = TNpmRegistryClientResult
+
+export type TGetPackumentResult = TNpmRegistryClientResult | Packument
+
+export type TSetLatestTagResult = TNpmRegistryClientResult
+
+export interface INpmRegClientBatchWrapper {
+  getPackument(
+    params: Array<string>,
+    skipErrors?: boolean
+  ): Promise<TBatchResult<TGetPackumentResult>[]>
+
+  deprecate(
+    params: Array<IDeprecatePackageParams>,
+    skipErrors?: boolean
+  ): Promise<TBatchResult<TDeprecateResult>[]>
+
+  unDeprecate(
+    params: Array<IPackageParams>,
+    skipErrors?: boolean
+  ): Promise<TBatchResult<TDeprecateResult>[]>
+
+  publish(
+    opts: TTarballOpts[],
+    skipErrors?: boolean
+  ): Promise<TBatchResult<TPublishResult>[]>
+
+  setLatestTag(
+    opts: TSetLatestTagOpts[],
+    skipErrors?: boolean
+  ): Promise<TBatchResult<TSetLatestTagResult>[]>
+}
 
 export interface INpmRegClientWrapper {
   deprecate(
     packageName: string,
     version: string,
     message: string
-  ): Promise<null>
+  ): Promise<TDeprecateResult>
 
   unDeprecate(
     packageName: string,
     version: string,
-  ): Promise<null>
+  ): Promise<TDeprecateResult>
 
-  deprecateBatch(
-    params: Array<IDeprecatePackageParams>,
-    skipErrors?: boolean
-  ): Promise<TBatchResult<null>[]>
-
-  unDeprecateBatch(
-    params: Array<IPackageParams>,
-    skipErrors?: boolean
-  ): Promise<TBatchResult<null>[]>
-
-  get(
+  getPackument(
     packageName: string
   ): Promise<Packument>
-
-  getBatch(
-    packageNames: string[],
-    skipErrors?: boolean
-  ): Promise<TBatchResult<Packument>[]>
 
   publish(
     opts: TTarballOpts
   ): Promise<TPublishResult>
 
-  publishBatch(
-    opts: TTarballOpts[],
-    skipErrors?: boolean
-  ): Promise<TBatchResult<TPublishResult>[]>
+  setLatestTag(
+    opts: TSetLatestTagOpts
+  ): Promise<TSetLatestTagResult>
+
+  getVersions(
+    name: string
+  ): Promise<string[]>
 }
 
 export type TNpmRegClientAuth = {

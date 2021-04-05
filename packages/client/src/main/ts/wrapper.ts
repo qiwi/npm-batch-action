@@ -1,15 +1,17 @@
 import RegClient from '@qiwi/npm-registry-client'
 import { Packument } from '@qiwi/npm-types'
 import { createReadStream } from 'fs'
+import { rcompare } from 'semver'
 
 import {
-  IDeprecatePackageParams,
   INpmRegClientWrapper,
-  IPackageParams,
-  TBatchResult,
+  TDeprecateResult,
   TNpmRegClientAuth,
   TPublishResult,
-  TTarballOpts} from './interfaces'
+  TSetLatestTagOpts,
+  TSetLatestTagResult,
+  TTarballOpts,
+} from './interfaces'
 
 export class NpmRegClientWrapper implements INpmRegClientWrapper {
   client: RegClient
@@ -26,7 +28,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     this.client = client || new RegClient()
   }
 
-  deprecate(packageName: string, version: string, message: string): Promise<null> {
+  deprecate(packageName: string, version: string, message: string): Promise<TDeprecateResult> {
     return new Promise<any>(
       (resolve, reject) => {
         try {
@@ -37,7 +39,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
               message,
               auth: this.auth
             },
-            resolve
+            NpmRegClientWrapper.callbackFactory(resolve, reject, data => data.success)
           )
         } catch (e) {
           reject(e)
@@ -46,25 +48,7 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     )
   }
 
-  deprecateBatch(
-    params: Array<IDeprecatePackageParams>,
-    skipErrors?: boolean
-  ): Promise<TBatchResult<null>[]> {
-    return NpmRegClientWrapper.performBatchActions(
-      params,
-      ({ packageName, version, message }) => this.deprecate(packageName, version, message),
-      skipErrors
-    )
-  }
-
-  unDeprecateBatch(
-    params: Array<IPackageParams>,
-    skipErrors?: boolean
-  ): Promise<TBatchResult<null>[]> {
-    return this.deprecateBatch(params.map(item => ({ ...item, message: '' })), skipErrors)
-  }
-
-  unDeprecate(packageName: string, version: string): Promise<null> {
+  unDeprecate(packageName: string, version: string): Promise<TDeprecateResult> {
     return this.deprecate(packageName, version, '')
   }
 
@@ -72,10 +56,10 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     return `${this.registryUrl}${packageName.replace('/', '%2F')}`
   }
 
-  get(packageName: string): Promise<Packument> {
-    return new Promise<Packument>(
+  getPackument(packageName: string): Promise<Packument> {
+    return new Promise(
       (resolve, reject) => {
-        const callback = NpmRegClientWrapper.callbackFactory(resolve, reject)
+        const callback = NpmRegClientWrapper.callbackFactory(resolve, reject, data => data.success !== false)
         try {
           this.client.get(
             this.getPackageUrl(packageName),
@@ -86,14 +70,6 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
           callback(e)
         }
       }
-    )
-  }
-
-  getBatch(packageNames: string[], skipErrors?: boolean): Promise<TBatchResult<Packument>[]> {
-    return NpmRegClientWrapper.performBatchActions(
-      packageNames,
-      (packageName) => this.get(packageName),
-      skipErrors
     )
   }
 
@@ -118,30 +94,42 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     )
   }
 
-  publishBatch(opts: TTarballOpts[], skipErrors?: boolean): Promise<TBatchResult<TPublishResult>[]> {
-    return NpmRegClientWrapper.performBatchActions(
-      opts,
-      (opt) => this.publish(opt),
-      skipErrors
+  async setLatestTag(opt: TSetLatestTagOpts): Promise<TSetLatestTagResult> {
+    const version = opt.version ? opt.version : await this.getVersions(opt.name)
+      .then(versions => versions.sort(rcompare)[0])
+
+    return new Promise(
+      (resolve, reject) => {
+        try {
+          this.client.distTags.add(
+            this.registryUrl,
+            {
+              version: version,
+              package: opt.name,
+              distTag: 'latest',
+              auth: this.auth
+            },
+            NpmRegClientWrapper.callbackFactory(resolve, reject, data => data.success)
+          )
+        } catch (e) {
+          reject(e)
+        }
+      }
     )
   }
 
-  static performBatchActions<T>(
-    params: Array<any>,
-    actionFactory: (...args: any[]) => Promise<T>,
-    skipErrors?: boolean
-  ): Promise<TBatchResult<T>[]> {
-    const actions = params.map(actionFactory)
-    if (skipErrors) {
-      return Promise.allSettled(actions)
+  async getVersions(name: string): Promise<string[]> {
+    const packuments = await this.getPackument(name)
+    if (!packuments?.versions) {
+      throw new Error(`Versions are absent for ${name}`)
     }
-    return Promise.all(actions)
-      .then(results => results.map(value => ({ status: 'fulfilled', value })))
+    return Object.keys(packuments.versions)
   }
 
   static callbackFactory(
     resolve: (...args: any[]) => void,
     reject: (...args: any[]) => void,
+    isValid?: (data: any) => boolean
   ) {
     return (
       err: any, // eslint-disable-line @typescript-eslint/explicit-module-boundary-types
@@ -149,6 +137,10 @@ export class NpmRegClientWrapper implements INpmRegClientWrapper {
     ): void => {
       if (err) {
         reject(err)
+        return
+      }
+      if (data && isValid && !isValid(data)) {
+        reject(data)
         return
       }
       resolve(data)

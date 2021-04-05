@@ -1,13 +1,10 @@
+import { NpmRegClientBatchWrapper, NpmRegClientWrapper } from '@qiwi/npm-batch-client'
 import nock from 'nock'
 
 import {
-  getFailedResults,
-  handleSettledResults,
   performDeprecation,
-  processResults,
   TDeprecationConfig
 } from '../../../main/ts'
-import * as deprecation from '../../../main/ts/executors/deprecate'
 import * as misc from '../../../main/ts/utils/misc'
 import { mockOutput } from '../utils'
 
@@ -57,72 +54,23 @@ const createMocks = () =>
       .reply(200, { versions: { '0.1.0': {} } }),
     deprecate: nock(registryUrl)
       .put(`/${data.packageName}`)
-      .reply(200)
+      .reply(200, { success: true })
   }))
 
 describe('performDeprecation', () => {
   beforeEach(() => jest.restoreAllMocks())
+  const wrapper = new NpmRegClientWrapper(registryUrl, config.auth)
+  const batchWrapper = new NpmRegClientBatchWrapper(wrapper)
 
-  it('makes API requests with rate limit', async () => {
+  it('prints results in json', async () => {
     mockOutput()
     const mocks = createMocks()
-    const startTime = Date.now()
-    await performDeprecation(config)
-    const endTime = Date.now() - startTime
-    expect(mocks.filter(item => item.info.isDone() && item.deprecate.isDone()))
-      .toHaveLength(mocks.length)
-    expect(endTime).toBeGreaterThanOrEqual(500)
-  })
-})
-
-describe('processResults', () => {
-  it('calls necessary util functions', () => {
-    mockOutput()
-    const getSuccessfulResults = jest.spyOn(deprecation, 'getSuccessfulResults')
-    const getFailedResults = jest.spyOn(deprecation, 'getFailedResults')
-
-    processResults([], config)
-
-    expect(getSuccessfulResults).toHaveBeenCalled()
-    expect(getFailedResults).toHaveBeenCalled()
-  })
-
-  it('prints output in JSON when flag is true', async () => {
-    const npmClientMock = {
-      deprecateBatch: jest.fn(() => Promise.resolve([]))
-    }
-
-    const printResultsJsonSpy = jest.spyOn(misc, 'printResultsJson')
+    const printResultsJson = jest.spyOn(misc, 'printResultsJson')
       .mockImplementation(() => { /* noop */ })
 
-    await performDeprecation({ ...config, batch: { jsonOutput: true }}, npmClientMock as any)
+    await performDeprecation({ ...config, batch: { ...config.batch, jsonOutput: true }}, batchWrapper)
 
-    expect(printResultsJsonSpy).toHaveBeenCalledWith({
-      successfulResults: [],
-      failedResults: []
-    })
+    expect(mocks.every(item => item.info.isDone() && item.deprecate.isDone())).toEqual(true)
+    expect(printResultsJson).toHaveBeenCalled()
   })
 })
-
-describe('utils', () => {
-  test('getFailedResults handles different types of error', () => {
-    const data = getFailedResults(
-      config.data.map(
-        (packageInfo, i) => ({
-          packageInfo,
-          result: i % 2 === 0 ? 'error' : new Error('error')
-        }))
-    )
-    expect(data).toEqual(config.data.map(item => ({ ...item, error: 'error' })))
-  })
-
-  test('handleSettledResults normalizes fulfilled and rejected results', () => {
-    expect(handleSettledResults([
-      { status: 'fulfilled', value: null }, // eslint-disable-line unicorn/no-null
-      { status: 'rejected', reason: 'reason' },
-    ])).toEqual([
-      null, // eslint-disable-line unicorn/no-null
-      'reason'
-    ])
-  })
-});

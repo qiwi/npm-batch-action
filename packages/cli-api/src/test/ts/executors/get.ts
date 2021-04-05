@@ -1,7 +1,4 @@
-import { Packument, TBatchResult } from '@qiwi/npm-batch-client'
-
-import { TGetConfig } from '../../../main/ts'
-import { performGet, processGetResults } from '../../../main/ts/executors/get'
+import { performGet, TGetConfig } from '../../../main/ts'
 import * as misc from '../../../main/ts/utils/misc'
 
 const registryUrl = 'http://localhost'
@@ -26,7 +23,7 @@ beforeEach(jest.restoreAllMocks)
 describe('performGet', () => {
   it('calls getBatch', async () => {
     const npmClientMock = {
-      getBatch: jest.fn(() => Promise.resolve([]))
+      getPackument: jest.fn(() => Promise.resolve([]))
     }
     const printResultsJsonSpy = jest.spyOn(misc, 'printResultsJson')
       .mockImplementation(() => { /* noop */
@@ -34,97 +31,92 @@ describe('performGet', () => {
 
     await performGet(config, npmClientMock as any)
 
-    expect(npmClientMock.getBatch).toHaveBeenCalledWith(config.data, true)
+    expect(npmClientMock.getPackument).toHaveBeenCalledWith(config.data, true)
     expect(printResultsJsonSpy).toHaveBeenCalledWith({
       failedPackages: [],
       successfulPackages: [],
       packuments: []
     })
   })
-})
 
-describe('processGetResults', () => {
-  const results: TBatchResult<Packument>[] = [
-    {
-      status: 'fulfilled',
-      value: {} as Packument
-    },
-    {
-      status: 'fulfilled',
-      value: undefined as any
-    },
-    {
-      status: 'rejected',
-      reason: 'error'
-    },
-    {
-      status: 'rejected',
-      reason: new Error('error')
-    },
-    {
-      status: 'rejected',
-      reason: undefined
+  it('handles errors', async () => {
+    const error =  new Error('error')
+    const npmClientMock = {
+      getPackument: jest.fn(() => Promise.resolve([
+        {
+          status: 'fulfilled',
+          value: { foo: 'foo' } as any,
+        },
+        {
+          status: 'fulfilled',
+          value: {
+            success: false,
+            error: 'error',
+          }
+        },
+        {
+          status: 'rejected',
+          reason: 'error',
+        },
+        {
+          status: 'rejected',
+          reason: error,
+        },
+        {
+          status: 'rejected',
+          reason: undefined,
+        }
+      ]))
     }
-  ]
 
-  it('handles results and writes them to a file', () => {
-    const customConfig = {
+    const printResultsSpy = jest.spyOn(misc, 'printResults')
+      .mockImplementation(() => { /* noop */
+      })
+    const writeToFileSpy = jest.spyOn(misc, 'writeToFile')
+      .mockImplementation(() => { /* noop */ })
+
+    await performGet({
       ...config,
-      batch: { path: 'foo' },
-      data: ['foo', 'bar', 'baz', 'bat', 'qux']
-    }
-    const printResults = jest.spyOn(misc, 'printResults')
-      .mockImplementation(() => { /* noop */
-      })
-    const writeFileSyncSpy = jest.spyOn(misc, 'writeToFile')
-      .mockImplementation(() => { /* noop */
-      })
-    const printResultsJsonSpy = jest.spyOn(misc, 'printResultsJson')
-      .mockImplementation(() => { /* noop */
-      })
+      batch: undefined,
+      data: [
+        'foo',
+        'bar',
+        'baz',
+        'bat',
+        'qux'
+      ]
+    }, npmClientMock as any)
 
-    processGetResults(results, customConfig)
 
-    expect(printResultsJsonSpy).not.toHaveBeenCalled()
-    expect(writeFileSyncSpy).toHaveBeenCalledWith(
-      'foo',
-      [{ name: 'foo', value: {} }],
+    expect(printResultsSpy).toHaveBeenCalledWith(
+      [
+        {
+          name: 'foo',
+        }
+      ],
+      [
+        {
+          name: 'bar',
+          reason: 'error',
+        },
+        {
+          name: 'baz',
+          reason: 'error',
+        },
+        {
+          name: 'bat',
+          reason: error.message,
+        },
+        {
+          name: 'qux',
+          reason: 'no data',
+        }
+      ],
+      expect.any(Array),
+      expect.any(Array),
+      expect.any(String),
+      expect.any(String),
     )
-    expect(printResults).toHaveBeenCalled()
-  })
-
-  it('prints results in json', () => {
-    const customConfig = {
-      ...config,
-      batch: { jsonOutput: true },
-      data: ['foo', 'bar', 'baz', 'bat', 'qux']
-    }
-
-    const printResults = jest.spyOn(misc, 'printResults')
-      .mockImplementation(() => { /* noop */
-      })
-    const writeFileSyncSpy = jest.spyOn(misc, 'writeToFile')
-      .mockImplementation(() => { /* noop */
-      })
-    const printResultsJsonSpy = jest.spyOn(misc, 'printResultsJson')
-      .mockImplementation(() => { /* noop */
-      })
-
-    processGetResults(results, customConfig)
-
-    expect(printResults).not.toHaveBeenCalled()
-    expect(writeFileSyncSpy).not.toHaveBeenCalled()
-    expect(printResultsJsonSpy).toHaveBeenCalledWith({
-      successfulPackages: [
-        { name: 'foo' },
-      ],
-      failedPackages: [
-        { name: 'bar', error: 'got undefined instead of Packument' },
-        { name: 'baz', error: 'error' },
-        { name: 'bat', error: 'error' },
-        { name: 'qux', error: undefined },
-      ],
-      packuments: [{ name: 'foo', value: {} }]
-    })
+    expect(writeToFileSpy).toHaveBeenCalled()
   })
 })

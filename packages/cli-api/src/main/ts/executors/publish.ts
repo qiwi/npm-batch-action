@@ -1,44 +1,21 @@
 import {
-  INpmRegClientWrapper,
-  RegClient,
-  TBatchResult,
   TPublishResult,
   TTarballOpts
 } from '@qiwi/npm-batch-client'
 
-import { TPublishConfig } from '../interfaces'
-import { npmRegClientWrapperFactory, printResults, printResultsJson } from '../utils'
+import { TActionPerformer, TPublishConfig } from '../interfaces'
+import { printResults, printResultsJson } from '../utils'
+import { parseResults } from '../utils/batch'
 
-export const performPublish = (
+export const performPublish: TActionPerformer = async (
   config: TPublishConfig,
-  customBatchClient?: INpmRegClientWrapper
+  batchClient
 ): Promise<void> => {
-  const batchClient = customBatchClient || npmRegClientWrapperFactory(config, ['publish'], new RegClient())
+  const data = await batchClient.publish(config.data, config.batch?.skipErrors)
 
-  return batchClient.publishBatch(config.data, config.batch?.skipErrors)
-    .then(data => processPublishResults(data, config))
-    .catch(console.error)
-}
-
-type TEnrichedResult = {
-  result: TBatchResult<TPublishResult>
-  params: TTarballOpts
-}
-
-export const processPublishResults = (results: TBatchResult<TPublishResult>[], config: TPublishConfig): void => {
-  const enrichedResults: TEnrichedResult[] = results
-    .map((result, i) => ({ result, params: config.data[i] }))
-
-  const successfulPackages = enrichedResults
-    .filter((item) => item.result.status === 'fulfilled' && item.result.value.success)
-    .map(item => item.params)
-
-  const failedPackages = enrichedResults
-    .filter((item) => item.result.status === 'rejected' || !item.result.value.success)
-    .map((item: TEnrichedResult) => ({
-      ...item.params,
-      error: item.result.status === 'rejected' ? item.result.reason : 'no data'
-    }))
+  const { successful, failed } = parseResults<TTarballOpts, TPublishResult>(config.data, data)
+  const successfulPackages = successful.map(item => item.opts)
+  const failedPackages = failed.map(item => ({ ...item.opts, reason: item.reason }))
 
   if (config.batch?.jsonOutput) {
     printResultsJson({ successfulPackages, failedPackages })

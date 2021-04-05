@@ -1,7 +1,7 @@
 import nock from 'nock'
 import { join } from 'path'
 
-import { NpmRegClientWrapper, TNpmRegClientAuth, TTarballOpts } from '../../main/ts'
+import { NpmRegClientWrapper, TNpmRegClientAuth, TSetLatestTagOpts, TTarballOpts } from '../../main/ts'
 import packageInfo from './resources/packageInfo.json'
 
 const auth: TNpmRegClientAuth = {
@@ -11,13 +11,7 @@ const auth: TNpmRegClientAuth = {
   alwaysAuth: true
 }
 
-const error = new Error('foo')
 const url = 'http://localhost'
-
-const actionFactory = (i: number): Promise<string> =>
-  i % 2 === 0
-    ? Promise.resolve('bar')
-    : Promise.reject(error)
 
 beforeEach(jest.restoreAllMocks)
 
@@ -50,12 +44,12 @@ describe('NpmRegClientWrapper', () => {
     return wrapper.deprecate('foo', '*', 'foo')
   })
 
-  test('get calls REST API', async () => {
+  test('getPackument calls REST API', async () => {
     const packageName = 'foo'
     const mock = nock(url)
       .get(`/${packageName}`)
       .reply(200, packageInfo)
-    await expect(wrapper.get(packageName)).resolves.toMatchObject(packageInfo)
+    await expect(wrapper.getPackument(packageName)).resolves.toMatchObject(packageInfo)
     expect(mock.isDone()).toBeTruthy()
   })
 
@@ -82,43 +76,68 @@ describe('NpmRegClientWrapper', () => {
     expect(mock.isDone()).toEqual(true)
   })
 
-  describe('performBatchActions', function () {
-    const params = Array.from({ length: 5 }, (_, i) => i)
+  describe('getVersions', () => {
+    it('returns versions', async () => {
+      const name = 'foo'
+      const wrapper = new NpmRegClientWrapper(url, { token: 'token' })
+      const getPackumentMock = nock(url)
+        .get(`/${name}`)
+        .reply(200, packageInfo)
 
-    it('throws an error without skipErrors', () => {
-      return expect(
-        NpmRegClientWrapper.performBatchActions(params, actionFactory)
-      ).rejects.toBe(error)
+      const data = await wrapper.getVersions(name)
+      expect(data).toEqual(['1.1.0', '1.2.0'])
+      expect(getPackumentMock.isDone()).toEqual(true)
     })
 
-    it('returns array of PromiseSettledResults', async () => {
-      const results = await NpmRegClientWrapper.performBatchActions(
-        [1, 2, 3],
-        (value) => Promise.resolve(value)
-      )
-      expect(results).toEqual([
-        {
-          status: 'fulfilled',
-          value: 1,
-        },
-        {
-          status: 'fulfilled',
-          value: 2,
-        },
-        {
-          status: 'fulfilled',
-          value: 3,
-        },
-      ])
+    it('throws an error when versions are absent', async () => {
+      const wrapper = new NpmRegClientWrapper(url, { token: 'token' })
+      const opts: TSetLatestTagOpts = {
+        name: 'foo'
+      }
+      const getPackumentMock = nock(url)
+        .get(`/${opts.name}`)
+        .reply(200, {})
+
+      await expect(wrapper.getVersions(opts.name))
+        .rejects.toThrowError('Versions are absent for foo')
+
+      expect(getPackumentMock.isDone()).toEqual(true)
+    })
+  })
+
+  describe('setLatest', () => {
+    it('calls API', async () => {
+      const wrapper = new NpmRegClientWrapper(url, { token: 'token' })
+      const opts: TSetLatestTagOpts = {
+        version: '1.0.0',
+        name: 'foo'
+      }
+      const mock = nock(url)
+        .put('/-/package/foo/dist-tags/latest')
+        .reply(200, { success: true })
+      const data = await wrapper.setLatestTag(opts)
+      expect(data).toEqual({ success: true })
+      expect(mock.isDone()).toEqual(true)
     })
 
-    it('continues processing with skipErrors when error occurs', async () => {
-      const data = await NpmRegClientWrapper.performBatchActions(params, actionFactory, true)
-      expect(data).toHaveLength(params.length)
-      expect(data.filter((item: any) => item.status === 'fulfilled')).toHaveLength(3)
-      expect(data.filter((item: any) => item.status === 'rejected')).toHaveLength(2)
+    it('resolves latest version', async () => {
+      const wrapper = new NpmRegClientWrapper(url, { token: 'token' })
+      const opts: TSetLatestTagOpts = {
+        name: 'foo'
+      }
+      const getPackumentMock = nock(url)
+        .get(`/${opts.name}`)
+        .reply(200, packageInfo)
+      const updateTagMock = nock(url)
+        .put('/-/package/foo/dist-tags/latest')
+        .reply(200, { success: true })
+
+      const data = await wrapper.setLatestTag(opts)
+      expect(data).toEqual({ success: true })
+      expect(getPackumentMock.isDone()).toEqual(true)
+      expect(updateTagMock.isDone()).toEqual(true)
     })
-  });
+  })
 
   describe('getPackageUrl', function () {
     type TTestCase = {
@@ -139,25 +158,6 @@ describe('NpmRegClientWrapper', () => {
         expect(wrapper.getPackageUrl(input)).toEqual(output)
       })
     })
-  })
-
-  describe('batch methods', () => {
-    const batchMethods = [
-      'deprecateBatch',
-      'unDeprecateBatch',
-      'getBatch',
-      'publishBatch'
-    ]
-    const wrapper = new NpmRegClientWrapper(url, auth)
-    batchMethods.forEach(async (method) =>
-      it(`${method} calls performBatchActions`, async () => {
-        const performBatchActionsSpy = jest.spyOn(NpmRegClientWrapper, 'performBatchActions')
-          .mockImplementation(() => Promise.resolve([]))
-        // @ts-ignore
-        await wrapper[method]([], true)
-        expect(performBatchActionsSpy).toHaveBeenCalledWith([], expect.any(Function), true)
-      })
-    )
   })
 
   describe('callbackFactory', () => {

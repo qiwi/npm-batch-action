@@ -9,7 +9,7 @@ yarn add @qiwi/npm-batch-client
 All batch methods return array of `PromiseSettledResult`s
 ## Creating an instance
 ```typescript
-import { NpmRegClientWrapper, RegClient } from '@qiwi/npm-batch-client'
+import { NpmRegClientWrapper, NpmRegClientBatchWrapper, RegClient } from '@qiwi/npm-batch-client'
 
 const wrapper = new NpmRegClientWrapper(
   'https://registry.npmjs.org',
@@ -19,6 +19,7 @@ const wrapper = new NpmRegClientWrapper(
     email: 'email@email.com'
   }
 )
+const batchWrapper = new NpmRegClientBatchWrapper(wrapper)
 
 // You can use authorization via token
 const wrapperWithTokenAuth = new NpmRegClientWrapper(
@@ -40,7 +41,7 @@ const wrapperWithCustomClientInstance = new NpmRegClientWrapper(
 
 ## Get info about package
 ```typescript
-wrapper.get('@types/react')
+wrapper.getPackument('@types/react')
   .then(console.log)
 /*
 {
@@ -64,7 +65,7 @@ const packageNames = [
   'baz'
 ]
 
-wrapper.getBatch(packageNames)
+batchWrapper.getPackument(packageNames)
   .then(console.log)
 /*
 [
@@ -126,8 +127,8 @@ wrapper.deprecate('foo', '<1.2.0', 'foo <1.2.0 contains critical bugs')
     message: 'baz is deprecated'
   },
 ]
-wrapper.deprecateBatch(params)
-wrapper.deprecateBatch(params, true) // if you want to ignore errors when executing a batch of actions
+batchWrapper.deprecate(params)
+batchWrapper.deprecate(params, true) // if you want to ignore errors when executing a batch of actions
 ```
 ## Un-deprecate list of packages
 ```typescript
@@ -145,8 +146,8 @@ wrapper.deprecateBatch(params, true) // if you want to ignore errors when execut
     version: '<1.2.0'
   },
 ]
-wrapper.unDeprecateBatch(params)
-wrapper.unDeprecateBatch(params, true) // if you want to ignore errors when executing a batch of actions
+batchWrapper.unDeprecate(params)
+batchWrapper.unDeprecate(params, true) // if you want to ignore errors when executing a batch of actions
 ```
 ## Publish a package
 ```typescript
@@ -175,6 +176,28 @@ const opts = [
       access: 'public'
     },
 ]
-wrapper.publishBatch(opts)
-wrapper.publishBatch(opts, true) // if you want to ignore errors when executing a batch of actions
+batchWrapper.publish(opts)
+batchWrapper.publish(opts, true) // if you want to ignore errors when executing a batch of actions
+```
+## Set latest tag
+```js
+const opts = {
+    name: 'packageA',
+    version: '1.0.0' // if version is absent the latest version will be set
+}
+wrapper.setLatestTag(opts)
+```
+## Set latest tag for a list of packages
+```js
+const opts = [
+  {
+    name: 'packageA',
+    version: '1.0.0',
+  },
+  {
+    name: 'packageB' // the latest version will be set
+  },
+]
+batchWrapper.setLatestTag(opts)
+batchWrapper.setLatestTag(opts, true)  // if you want to ignore errors when executing a batch of actions
 ```

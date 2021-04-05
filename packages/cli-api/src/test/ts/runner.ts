@@ -2,6 +2,7 @@ import { IBaseConfig, readConfigAndRun } from '../../main/ts'
 import * as deprecation from '../../main/ts/executors/deprecate'
 import * as get from '../../main/ts/executors/get'
 import * as publish from '../../main/ts/executors/publish'
+import * as setLatest from '../../main/ts/executors/setLatest'
 import * as utils from '../../main/ts/utils/misc'
 import * as validators from '../../main/ts/utils/validators'
 import { mockOutput } from './utils'
@@ -48,10 +49,12 @@ describe('readConfigAndRun', () => {
     expect(spy).toHaveBeenCalled()
   })
 
-  it('calls performGet for get', () => {
+  it('calls performGet for getPackument', () => {
     mockOutput()
     jest.spyOn(utils, 'readFileToString')
       .mockImplementation(() => JSON.stringify({ ...config, action: 'get', batch: { path: '' } }))
+    jest.spyOn(utils, 'writeToFile')
+      .mockImplementation(() => { /* noop */ })
     const spy = jest.spyOn(get, 'performGet')
     readConfigAndRun({ config: 'foo' })
     expect(spy).toHaveBeenCalled()
@@ -63,6 +66,15 @@ describe('readConfigAndRun', () => {
     jest.spyOn(utils, 'readFileToString')
       .mockImplementation(() => JSON.stringify({ ...config, action: 'un-deprecate' }))
     const spy = jest.spyOn(deprecation, 'performDeprecation')
+    readConfigAndRun({ config: 'foo' })
+    expect(spy).toHaveBeenCalled()
+  })
+
+  it('calls performSetLatest for set-latest', () => {
+    mockOutput()
+    jest.spyOn(utils, 'readFileToString')
+      .mockImplementation(() => JSON.stringify({ ...config, action: 'set-latest' }))
+    const spy = jest.spyOn(setLatest, 'performSetLatest')
     readConfigAndRun({ config: 'foo' })
     expect(spy).toHaveBeenCalled()
   })
