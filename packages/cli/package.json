@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/npm-batch-cli",
-  "version": "1.5.3",
+  "version": "2.0.0",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -47,7 +47,7 @@
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/npm-batch-cli-api": "1.5.3",
+    "@qiwi/npm-batch-cli-api": "2.0.0",
     "meow": "^9.0.0"
   },
   "devDependencies": {
