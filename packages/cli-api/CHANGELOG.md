@@ -1,3 +1,23 @@
+# @qiwi/npm-batch-cli-api [2.0.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-api@1.5.3...@qiwi/npm-batch-cli-api@2.0.0) (2021-04-05)
+
+
+### Features
+
+* add set-latest, refactoring ([#23](https://github.com/qiwi/npm-batch-action/issues/23)) ([8e80667](https://github.com/qiwi/npm-batch-action/commit/8e80667abde806cc416b49096bb513b5db5be27b))
+
+
+### BREAKING CHANGES
+
+* @qiwi/npm-batch-client: batch actions moved to NpmRegClientBatchWrapper
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/npm-batch-client:** upgraded to 2.0.0
+
 ## @qiwi/npm-batch-cli-api [1.5.3](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-api@1.5.2...@qiwi/npm-batch-cli-api@1.5.3) (2021-03-26)
 
 
