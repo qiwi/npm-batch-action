@@ -1,3 +1,13 @@
+## @qiwi/npm-batch-cli-pipe [1.2.4](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-pipe@1.2.3...@qiwi/npm-batch-cli-pipe@1.2.4) (2021-04-05)
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/npm-batch-cli-api:** upgraded to 2.0.0
+
 ## @qiwi/npm-batch-cli-pipe [1.2.3](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-pipe@1.2.2...@qiwi/npm-batch-cli-pipe@1.2.3) (2021-03-26)
 
 
