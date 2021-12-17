@@ -1,3 +1,10 @@
+# @qiwi/npm-batch-client-infra [1.3.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-client-infra@1.2.1...@qiwi/npm-batch-client-infra@1.3.0) (2021-12-17)
+
+
+### Features
+
+* add printOnlyFailed flag, update deps ([#34](https://github.com/qiwi/npm-batch-action/issues/34)) ([4906133](https://github.com/qiwi/npm-batch-action/commit/4906133b8d7c9fefbcb3403e83c9a6997f1d7eb7))
+
 ## @qiwi/npm-batch-client-infra [1.2.1](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-client-infra@1.2.0...@qiwi/npm-batch-client-infra@1.2.1) (2021-02-15)
 
 

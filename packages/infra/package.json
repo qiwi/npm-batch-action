@@ -1,6 +1,6 @@
 {
   "name": "@qiwi/npm-batch-client-infra",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "private": false,
   "publishConfig": {
     "access": "public"
