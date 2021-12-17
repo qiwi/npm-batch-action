@@ -16,14 +16,14 @@ export const performDeprecation: TActionPerformer = async (
 
   if (config.batch?.jsonOutput) {
     printResultsJson({
-      successfulResults,
+      successfulResults: config.batch?.printOnlyFailed ? undefined : successfulResults,
       failedResults
     })
     return
   }
 
   printResults(
-    successfulResults,
+    config.batch?.printOnlyFailed ? [] : successfulResults,
     failedResults,
     ['packageName', 'version', 'message'],
     ['packageName', 'version', 'message', 'error'],

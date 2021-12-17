@@ -19,7 +19,8 @@ export interface IBaseConfig<T = any> {
     ratelimit?: TRateLimit,
     skipErrors?: boolean,
     jsonOutput?: boolean,
-    path?: string
+    path?: string,
+    printOnlyFailed?: boolean,
   },
   data: T,
 }

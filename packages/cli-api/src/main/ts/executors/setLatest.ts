@@ -23,12 +23,15 @@ export const performSetLatest: TActionPerformer = async (
   const failedPackages = failed.map(item => ({ ...item.opts, reason: item.reason }))
 
   if (config.batch?.jsonOutput) {
-    printResultsJson({ successfulPackages, failedPackages })
+    printResultsJson({
+      successfulPackages: config.batch?.printOnlyFailed ? undefined : successfulPackages,
+      failedPackages
+    })
     return
   }
 
   printResults(
-    successfulPackages,
+    config.batch?.printOnlyFailed ? [] : successfulPackages,
     failedPackages,
     ['name', 'version'],
     ['name', 'version', 'reason'],
