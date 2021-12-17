@@ -1,3 +1,19 @@
+# @qiwi/npm-batch-cli-pipe [1.3.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-pipe@1.2.4...@qiwi/npm-batch-cli-pipe@1.3.0) (2021-12-17)
+
+
+### Features
+
+* add printOnlyFailed flag, update deps ([#34](https://github.com/qiwi/npm-batch-action/issues/34)) ([4906133](https://github.com/qiwi/npm-batch-action/commit/4906133b8d7c9fefbcb3403e83c9a6997f1d7eb7))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/npm-batch-cli-api:** upgraded to 2.1.0
+* **@qiwi/npm-batch-client-infra:** upgraded to 1.3.0
+
 ## @qiwi/npm-batch-cli-pipe [1.2.4](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-pipe@1.2.3...@qiwi/npm-batch-cli-pipe@1.2.4) (2021-04-05)
 
 
