@@ -39,21 +39,21 @@
     "build:es6": "mkdirp target/es6 && tsc -p tsconfig.es6.json",
     "build:ts": "cpy src/main/ts/ target/ts/",
     "build:libdef": "libdefkit --tsconfig=tsconfig.es5.json --tsconfig=tsconfig.es6.json",
-    "docs": "typedoc src/main",
+    "docs": "typedoc",
     "uglify": "for f in $(find target -name '*.js'); do short=${f%.js}; terser -c -m -o $short.js -- $f; done",
     "postupdate": "yarn && yarn build && yarn test",
     "format": "prettier --write 'src/**/*.ts'"
   },
   "dependencies": {
-    "@qiwi/deep-proxy": "^1.8.1",
+    "@qiwi/deep-proxy": "^1.8.3",
     "@qiwi/npm-batch-client": "2.0.0",
-    "@qiwi/substrate": "^1.20.1",
-    "push-it-to-the-limit": "^1.17.1",
-    "tslib": "^2.1.0"
+    "@qiwi/substrate": "^1.20.11",
+    "push-it-to-the-limit": "^1.17.3",
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@qiwi/npm-batch-client-infra": "1.2.1",
-    "nock": "^13.0.7"
+    "nock": "^13.2.1"
   },
   "repository": {
     "type": "git",
