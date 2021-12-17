@@ -27,7 +27,7 @@ export const performGet = async (
 
   if (config.batch?.jsonOutput) {
     printResultsJson({
-      successfulPackages,
+      successfulPackages: config.batch?.printOnlyFailed ? undefined : successfulPackages,
       failedPackages,
       packuments
     })
@@ -37,7 +37,7 @@ export const performGet = async (
   writeToFile(config.batch?.path as string, packuments)
 
   printResults(
-    successfulPackages,
+    config.batch?.printOnlyFailed ? [] : successfulPackages,
     failedPackages,
     ['name'],
     ['name', 'reason'],

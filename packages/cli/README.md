@@ -332,3 +332,13 @@ Flag `jsonOutput` prints result in JSON format.
     ...
 }
 ```
+Flag `printOnlyFailed` prints only info about failed packages
+```text
+{
+    ...
+    "batch": {
+        "printOnlyFailed": true
+    },
+    ...
+}
+```
