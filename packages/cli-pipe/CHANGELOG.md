@@ -1,3 +1,18 @@
+# @qiwi/npm-batch-cli-pipe [1.4.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-pipe@1.3.0...@qiwi/npm-batch-cli-pipe@1.4.0) (2021-12-21)
+
+
+### Features
+
+* add batch.serial, batch.defaultTag ([#35](https://github.com/qiwi/npm-batch-action/issues/35)) ([4c90812](https://github.com/qiwi/npm-batch-action/commit/4c90812e1accb9adf54022846aaad058f2b19325))
+
+
+
+
+
+### Dependencies
+
+* **@qiwi/npm-batch-cli-api:** upgraded to 2.2.0
+
 # @qiwi/npm-batch-cli-pipe [1.3.0](https://github.com/qiwi/npm-batch-action/compare/@qiwi/npm-batch-cli-pipe@1.2.4...@qiwi/npm-batch-cli-pipe@1.3.0) (2021-12-17)
 
 
