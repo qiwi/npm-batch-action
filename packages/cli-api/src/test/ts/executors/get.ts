@@ -31,7 +31,7 @@ describe('performGet', () => {
 
     await performGet(config, npmClientMock as any)
 
-    expect(npmClientMock.getPackument).toHaveBeenCalledWith(config.data, true)
+    expect(npmClientMock.getPackument).toHaveBeenCalledWith(config.data, true, undefined)
     expect(printResultsJsonSpy).toHaveBeenCalledWith({
       failedPackages: [],
       successfulPackages: [],

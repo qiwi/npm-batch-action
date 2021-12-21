@@ -8,7 +8,7 @@ export const performDeprecation: TActionPerformer = async (
   config: TDeprecationConfig,
   batchClient
 ): Promise<void> => {
-  const data = await batchClient.deprecate(config.data, config.batch?.skipErrors)
+  const data = await batchClient.deprecate(config.data, config.batch?.skipErrors, config.batch?.serial)
 
   const { successful, failed } = parseResults<IDeprecatePackageParams, TDeprecateResult>(config.data, data)
   const successfulResults = successful.map((item) => item.opts)

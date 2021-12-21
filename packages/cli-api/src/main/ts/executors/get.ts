@@ -18,7 +18,7 @@ export const performGet = async (
   config: TGetConfig,
   batchClient: INpmRegClientBatchWrapper
 ): Promise<void> => {
-  const data = await batchClient.getPackument(config.data, config.batch?.skipErrors)
+  const data = await batchClient.getPackument(config.data, config.batch?.skipErrors, config.batch?.serial)
 
   const { successful, failed } = parseResults<string, TGetPackumentResult>(config.data, data, isFailed)
   const successfulPackages = successful.map((item) => ({ name: item.opts }))

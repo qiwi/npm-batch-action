@@ -29,7 +29,7 @@ describe('performSettingLatest', () => {
 
     await performSetLatest(config, npmClientMock as any)
 
-    expect(npmClientMock.setLatestTag).toHaveBeenCalledWith(config.data, undefined)
+    expect(npmClientMock.setLatestTag).toHaveBeenCalledWith(config.data, undefined, undefined)
     expect(printResultsJsonSpy).toHaveBeenCalledWith({ successfulPackages: [], failedPackages: [] })
   })
 

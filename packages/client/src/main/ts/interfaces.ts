@@ -34,34 +34,39 @@ export type TDeprecateResult = TNpmRegistryClientResult
 
 export type TPublishResult = TNpmRegistryClientResult
 
-export type TGetPackumentResult = TNpmRegistryClientResult | Packument
+export type TGetPackumentResult = Packument
 
 export type TSetLatestTagResult = TNpmRegistryClientResult
 
 export interface INpmRegClientBatchWrapper {
   getPackument(
     params: Array<string>,
-    skipErrors?: boolean
+    skipErrors?: boolean,
+    serial?: boolean,
   ): Promise<TBatchResult<TGetPackumentResult>[]>
 
   deprecate(
     params: Array<IDeprecatePackageParams>,
-    skipErrors?: boolean
+    skipErrors?: boolean,
+    serial?: boolean,
   ): Promise<TBatchResult<TDeprecateResult>[]>
 
   unDeprecate(
     params: Array<IPackageParams>,
-    skipErrors?: boolean
+    skipErrors?: boolean,
+    serial?: boolean,
   ): Promise<TBatchResult<TDeprecateResult>[]>
 
   publish(
     opts: TTarballOpts[],
-    skipErrors?: boolean
+    skipErrors?: boolean,
+    serial?: boolean,
   ): Promise<TBatchResult<TPublishResult>[]>
 
   setLatestTag(
     opts: TSetLatestTagOpts[],
-    skipErrors?: boolean
+    skipErrors?: boolean,
+    serial?: boolean,
   ): Promise<TBatchResult<TSetLatestTagResult>[]>
 }
 

@@ -342,3 +342,24 @@ Flag `printOnlyFailed` prints only info about failed packages
     ...
 }
 ```
+`defaultTag` overrides the same option in [npm registry client](https://github.com/npm/npm-registry-client#configuration). Defaults to `latest-npm-batch-published`.
+```text
+{
+    ...
+    "batch": {
+        "defaultTag": "latest"
+    },
+    ...
+}
+```
+If you want batch actions to be performed sequentially set `serial` to true.
+This can be helpful for allowing npm to set dist-tag `latest` while publishing with `defaultTag === 'latest'`. 
+```text
+{
+    ...
+    "batch": {
+        "serial": true
+    },
+    ...
+}
+```
