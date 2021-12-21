@@ -14,7 +14,7 @@ export const performSetLatest: TActionPerformer = async (
   config: TSetLatestConfig,
   batchClient
 ): Promise<void> => {
-  const data = await batchClient.setLatestTag(config.data, config.batch?.skipErrors)
+  const data = await batchClient.setLatestTag(config.data, config.batch?.skipErrors, config.batch?.serial)
 
   const { successful, failed } = parseResults<TSetLatestTagOpts, TSetLatestTagResult>(
     config.data, data, res => res.value !== undefined

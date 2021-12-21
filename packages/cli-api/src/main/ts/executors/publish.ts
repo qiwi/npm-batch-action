@@ -11,7 +11,7 @@ export const performPublish: TActionPerformer = async (
   config: TPublishConfig,
   batchClient
 ): Promise<void> => {
-  const data = await batchClient.publish(config.data, config.batch?.skipErrors)
+  const data = await batchClient.publish(config.data, config.batch?.skipErrors, config.batch?.serial)
 
   const { successful, failed } = parseResults<TTarballOpts, TPublishResult>(config.data, data)
   const successfulPackages = successful.map(item => item.opts)

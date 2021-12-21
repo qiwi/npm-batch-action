@@ -20,7 +20,7 @@ export const run = (configString: string): Promise<void> => {
   const wrapper = npmRegClientWrapperFactory(
     validatedConfig,
     ['publish', 'get', 'distTags.add'],
-    new RegClient({ defaultTag: 'latest-npm-batch-published' })
+    new RegClient({ defaultTag: validatedConfig.batch?.defaultTag || 'latest-npm-batch-published' })
   )
   const batchWrapper = npmRegClientBatchWrapperFactory(wrapper)
   switch (validatedConfig.action) {

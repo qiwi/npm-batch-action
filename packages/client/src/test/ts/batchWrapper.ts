@@ -57,6 +57,29 @@ describe('NpmRegClientBatchWrapper', () => {
     })
   })
 
+  describe('performSerialBatchActions', () => {
+    it('returns array of PromiseSettledResults', async () => {
+      const results = await NpmRegClientBatchWrapper.performSerialBatchActions(
+        [1, 2, 3],
+        (value) => Promise.resolve(value)
+      )
+      expect(results).toEqual([
+        {
+          status: 'fulfilled',
+          value: 1,
+        },
+        {
+          status: 'fulfilled',
+          value: 2,
+        },
+        {
+          status: 'fulfilled',
+          value: 3,
+        },
+      ])
+    })
+  })
+
   describe('batch methods', () => {
     const batchMethods = [
       'deprecate',
@@ -72,8 +95,8 @@ describe('NpmRegClientBatchWrapper', () => {
         const performBatchActionsSpy = jest.spyOn(NpmRegClientBatchWrapper, 'performBatchActions')
           .mockImplementation(() => Promise.resolve([]))
         // @ts-ignore
-        await batchWrapper[method]([], true)
-        expect(performBatchActionsSpy).toHaveBeenCalledWith([], expect.any(Function), true)
+        await batchWrapper[method]([], true, false)
+        expect(performBatchActionsSpy).toHaveBeenCalledWith([], expect.any(Function), true, false)
       })
     )
   })

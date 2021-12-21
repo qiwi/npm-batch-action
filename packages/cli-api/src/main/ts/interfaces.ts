@@ -21,6 +21,8 @@ export interface IBaseConfig<T = any> {
     jsonOutput?: boolean,
     path?: string,
     printOnlyFailed?: boolean,
+    defaultTag?: string,
+    serial?: boolean,
   },
   data: T,
 }
