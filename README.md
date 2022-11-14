@@ -63,3 +63,5 @@ readConfigAndRun({ config: 'config.json' })
     .then(() => console.log('Done.'))
 ```
 
+## License
+[MIT](./LICENSE)
